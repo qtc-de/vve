@@ -1,0 +1,10 @@
+:AppendFile	vve.txt	/*:AppendFile*
+:AppendPath	vve.txt	/*:AppendPath*
+:InsertFile	vve.txt	/*:InsertFile*
+:InsertPath	vve.txt	/*:InsertPath*
+vve	vve.txt	/*vve*
+vve.txt	vve.txt	/*vve.txt*
+vveContents	vve.txt	/*vveContents*
+vveFunctionality	vve.txt	/*vveFunctionality*
+vveGlobalCommands	vve.txt	/*vveGlobalCommands*
+vveGlobalMappings	vve.txt	/*vveGlobalMappings*

@@ -1,0 +1,145 @@
+*vve.txt* Adding encoding capabilities to Vim
+
+ .----------------.  .----------------.  .----------------. 
+| .--------------. || .--------------. || .--------------. |
+| | ____   ____  | || | ____   ____  | || |  _________   | |
+| ||_  _| |_  _| | || ||_  _| |_  _| | || | |_   ___  |  | |
+| |  \ \   / /   | || |  \ \   / /   | || |   | |_  \_|  | |
+| |   \ \ / /    | || |   \ \ / /    | || |   |  _|  _   | |
+| |    \ ' /     | || |    \ ' /     | || |  _| |___/ |  | |
+| |     \_/      | || |     \_/      | || | | _______ |  | |
+| |              | || |              | || |              | |
+| '--------------' || '--------------' || '--------------' |
+ '----------------'  '----------------'  '----------------' 
+                               
+
+                                        Written by: Tobias Neitzel
+==================================================================
+CONTENTS                                               *vveContents*
+
+  1.Intro...................................|vvePlugin|
+  2.Functionality provided..................|vveFunctionality|
+      2.1.Global commands...................|vveGlobalCommands|
+      2.2.Global mappings...................|vveGlobalMappings|
+
+==================================================================
+1. Intro                                                       *vve*
+
+What is vve?
+
+  vve is shorthand for various vim encoders and adds encoding
+  capabilities to the Vim editor. Simple encoding tasks like
+  encoding a portion of text to Base64 format can be done by
+  invoking simple key mappings. Additionally, it adds certain
+  utility functions that are not really encoding related.
+
+How can vve help me?
+
+  Encoding or decoding text is a quite common task during 
+  security assessments and there are many possibilities to get
+  the job done. Encoding or decoding text directly in Vim is
+  one of the fastest possibilities that fits perfectly in my own
+  workflow. If you are familiar with Vim and love its quick
+  and flexible editing capabilities, you will also love vve.
+
+How do I use it?
+
+  vve is build according to the typical structure of a Vim plugin.
+  You can install it either by using Vims native package manager
+  or using one of the several available third party package
+  managers. After installation, vve adds certain keybindings to
+  your editor. All start with your <leader> key and can be
+  invoked either in normal or visual mode. See |vveGlobalMappings|
+  for more details.
+
+Limitations
+
+  Decoding text inside of an editor is of course limited to
+  displayable characters. If you decode a portion of text that
+  translates to non UTF-8 formatted data, vve will probably fail.
+  This is currently an expected behavior, but workarounds may
+  be implemented in future.
+
+
+==================================================================
+2. Functionality provided                         *vveFunctionality*
+
+------------------------------------------------------------------
+2.1. Global Commands                             *vveGlobalCommands*
+
+:InsertFile                                            *:InsertFile*
+    Just inserts the basename of the specified file. The idea
+    behind this function is that you may want to insert the name
+    of a file, but do not remember the exact filename. This
+    command has file autocompletion available on the command
+    prompt and allows you to search for your file. After hitting
+    enter, the basename of the file will be inserted.
+
+:AppendFile                                            *:AppendFile*
+    Same as |:InsertFile|, but it appends the filename after the
+    cursor instead of inserting in front of it.
+
+:InsertPath                                            *:InsertPath*
+    Same as |:InsertFile|, but it inserts the whole path to the
+    specified file instead of only the basename.
+
+:AppendPath                                            *:AppendPath*
+    Same as |:InsertPath|, but it appends the path after the
+    cursor instead of inserting in front of it.
+
+------------------------------------------------------------------
+2.2. Global Mappings                             *vveGlobalMappings*
+
+vve sets up several keymappings for normal and visual mode.
+The key combinations for the different mappings are exactly the
+same, only the workflow is different. With the visual mode
+mappings you select the text to operate on and then invoke the
+corresponding mapping. Normal mode mappings, on the other hand, 
+are invoked in normal mode and switch to operator pending mode
+after invocation. This means that they expect a movement
+instruction as a follow up action, to define the area of effect.
+All of the following key mappings are prefixed with your mapleader
+(<leader>). 
+
+Encoding Related Mappings~
+Key       Description~
+eb....... Encode as binary
+eB....... Encode as base64
+ee....... Encode HTML special characters (entities)
+eE....... Encode all characters as HTML (entities)
+eh....... Encode as hex
+eH....... Encode as hex string
+eu....... Encode URL special characters
+eU....... Encode all characters as URL
+ex....... Encode XML special characters
+eX....... Currently the same as ex
+db....... Decode binary
+dB....... Decode base64
+dh....... Decode hex
+dH....... Decode hex string
+du....... Decode URL
+dU....... Currently same as du
+de....... Decode HTML
+dE....... Currently same as de
+dx....... Decode XML
+dX....... Currently same as dx
+
+Number Related Mappings~
+Key       Description~
+th....... To hex format
+tH....... To hex string format
+tb....... To binary format
+to....... To octal format
+td....... To decimal format
+ma....... In place addition
+ms....... In place subtraction
+mm....... In place multiplication
+md....... In place division
+
+String Related Mappings~
+Key       Description~
+se....... Swap endianess
+sc....... Echo string length
+sC....... Echo hex string length
+su....... Convert to upper
+sl....... Convert to lower
