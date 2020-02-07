@@ -118,6 +118,10 @@ that each key combination needs to be prefixed by your \<leader\> key):
 ----
 
 Decoding arbitrary portions of text inside of an editor has of course certain limitations.
-If the decoded results contains non UTF8 conform character codes, the decoding operation
-might fails. Currently, this behavior is totally expected, but we may implement workarounds
+If the decoded result contains non UTF-8 conform character codes, the decoding operation
+might fail. Currently, this behavior is totally expected, but we may implement workarounds
 in future.
+
+
+
+*Copyright 2020, Tobias Neitzel and the vve contributors.*
