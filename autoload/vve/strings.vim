@@ -53,3 +53,15 @@ endfunction
 function! vve#strings#VisualLower(type)
     call vve#strings#Dispatch('string_lower', a:type)
 endfunction
+
+function! vve#strings#VisualMarkdownHeadline(type)
+    call vve#strings#Dispatch('string_markdown_headline', a:type)
+endfunction
+
+function! vve#strings#VisualSnakeCase(type)
+    call vve#strings#Dispatch('string_snake_case', a:type)
+endfunction
+
+function! vve#strings#VisualCamelCase(type)
+    call vve#strings#Dispatch('string_camel_case', a:type)
+endfunction

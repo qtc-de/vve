@@ -127,6 +127,52 @@ def swap_endian(hs):
     return hs
 
 
+def string_markdown_headline(headline):
+    '''
+    Takes a string that represents a headline insde a markdown text and returns the
+    corresponding anchor string.
+
+    Parameters:
+        headline    (string)            markdown headline
+
+    Returns:
+        anchor      (string)            corresponding anchor string
+    '''
+    headline = headline.lower()
+    headline = headline.replace(" ", "-")
+    anchor = "#" + headline
+    return anchor
+
+
+def string_snake_case(string):
+    '''
+    Takes an input string in CamelCase format and converts it to snake case.
+
+    Parameters:
+        string      (string)            input string in camel case
+
+    Returns:
+        output      (string)            output string in snake case
+    '''
+    output = re.sub(r'(?<!^)([A-Z])', r'_\1', string)
+    return output.lower()
+
+
+def string_camel_case(string):
+    '''
+    Takes an input string in snake_case format and converts it to camelCase.
+
+    Parameters:
+        string      (string)            input string in snake case
+
+    Returns:
+        output      (string)            output string in camel case
+    '''
+    make_upper = lambda x: x.group(1).upper()
+    output = re.sub(r'_([^_])', make_upper, string)
+    return output
+
+
 local_functions = locals()
 
 
