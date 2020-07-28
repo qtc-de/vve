@@ -111,6 +111,9 @@ that each key combination needs to be prefixed by your \<leader\> key):
 | sC        |Echo hex string length                                       |
 | su        |Convert to upper                                             |
 | sl        |Convert to lower                                             |
+| fc        |Convert to camelCase (from snake_case)                       |
+| fs        |Convert to snake_case (from camelCase)                       |
+| fs        |Convert to markdown anchor                                   |
 
 
 ### Limitations
