@@ -127,9 +127,9 @@ def swap_endian(hs):
     return hs
 
 
-def string_markdown_headline(headline):
+def string_markdown_anchor(headline):
     '''
-    Takes a string that represents a headline insde a markdown text and returns the
+    Takes a string that represents a markdown headline and returns the
     corresponding anchor string.
 
     Parameters:
@@ -142,6 +142,23 @@ def string_markdown_headline(headline):
     headline = headline.replace(" ", "-")
     anchor = "#" + headline
     return anchor
+
+
+def string_markdown_anchor_reference(headline):
+    '''
+    Takes a string that represents a markdown headline and returns a
+    corresponding reference (link) to the anchor.
+
+    Parameters:
+        headline    (string)            markdown headline
+
+    Returns:
+        reference   (string)            anchor reference
+    '''
+    reference = f'[{headline}]('
+    headline = string_markdown_anchor(headline)
+    reference += headline + ')'
+    return reference
 
 
 def string_snake_case(string):

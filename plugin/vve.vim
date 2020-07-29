@@ -88,7 +88,8 @@ nnoremap <leader>su :set operatorfunc=vve#strings#VisualUpper<CR>g@
 nnoremap <leader>sl :set operatorfunc=vve#strings#VisualLower<CR>g@
 nnoremap <leader>fc :set operatorfunc=vve#strings#VisualCamelCase<CR>g@
 nnoremap <leader>fs :set operatorfunc=vve#strings#VisualSnakeCase<CR>g@
-nnoremap <leader>fm :set operatorfunc=vve#strings#VisualMarkdownHeadline<CR>g@
+nnoremap <leader>fm :set operatorfunc=vve#strings#VisualMarkdownAnchor<CR>g@
+nnoremap <leader>fM :set operatorfunc=vve#strings#VisualMarkdownAnchorReference<CR>g@
 
 vnoremap <leader>se :<c-u>call vve#strings#VisualSwapEndian(visualmode())<CR>
 vnoremap <leader>sc :<c-u>call vve#strings#VisualLength(visualmode())<CR>
@@ -97,7 +98,8 @@ vnoremap <leader>su :<c-u>call vve#strings#VisualUpper(visualmode())<CR>
 vnoremap <leader>sl :<c-u>call vve#strings#VisualLower(visualmode())<CR>
 vnoremap <leader>fc :<c-u>call vve#strings#VisualCamelCase(visualmode())<CR>
 vnoremap <leader>fs :<c-u>call vve#strings#VisualSnakeCase(visualmode())<CR>
-vnoremap <leader>fm :<c-u>call vve#strings#VisualMarkdownHeadline(visualmode())<CR>
+vnoremap <leader>fm :<c-u>call vve#strings#VisualMarkdownAnchor(visualmode())<CR>
+vnoremap <leader>fM :<c-u>call vve#strings#VisualMarkdownAnchorReference(visualmode())<CR>
 
 " some util commands
 command! -nargs=1 -complete=file InsertFile :exec "normal i" . fnamemodify(<q-args>, ":t") . "\<esc>"

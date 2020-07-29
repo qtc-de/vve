@@ -54,8 +54,12 @@ function! vve#strings#VisualLower(type)
     call vve#strings#Dispatch('string_lower', a:type)
 endfunction
 
-function! vve#strings#VisualMarkdownHeadline(type)
-    call vve#strings#Dispatch('string_markdown_headline', a:type)
+function! vve#strings#VisualMarkdownAnchor(type)
+    call vve#strings#Dispatch('string_markdown_anchor', a:type)
+endfunction
+
+function! vve#strings#VisualMarkdownAnchorReference(type)
+    call vve#strings#Dispatch('string_markdown_anchor_reference', a:type)
 endfunction
 
 function! vve#strings#VisualSnakeCase(type)

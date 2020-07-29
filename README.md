@@ -113,7 +113,8 @@ that each key combination needs to be prefixed by your \<leader\> key):
 | sl        |Convert to lower                                             |
 | fc        |Convert to camelCase (from snake_case)                       |
 | fs        |Convert to snake_case (from camelCase)                       |
-| fs        |Convert to markdown anchor                                   |
+| fm        |Convert to markdown anchor                                   |
+| fM        |Convert to markdown anchor reference                         |
 
 
 ### Limitations
