@@ -38,6 +38,7 @@ nnoremap <leader>dE :set operatorfunc=vve#encode#VisualDecodeHtml<CR>g@
 nnoremap <leader>dx :set operatorfunc=vve#encode#VisualDecodeXml<CR>g@
 nnoremap <leader>dX :set operatorfunc=vve#encode#VisualDecodeXml<CR>g@
 
+vnoremap <leader>ce :<c-u>ChangeEncoding 
 vnoremap <leader>eb :<c-u>call vve#encode#VisualEncodeBinary(visualmode())<CR>
 vnoremap <leader>eB :<c-u>call vve#encode#VisualEncodeBase64(visualmode())<CR>
 vnoremap <leader>ee :<c-u>call vve#encode#VisualEncodeHtml(visualmode())<CR>
@@ -106,5 +107,6 @@ command! -nargs=1 -complete=file InsertFile :exec "normal i" . fnamemodify(<q-ar
 command! -nargs=1 -complete=file AppendFile :exec "normal a" . fnamemodify(<q-args>, ":t") . "\<esc>"
 command! -nargs=1 -complete=file InsertPath :exec "normal i" . <q-args> . "\<esc>"
 command! -nargs=1 -complete=file AppendPath :exec "normal a" . <q-args> . "\<esc>"
+command! -nargs=+ -complete=custom,vve#encode#ListEncodings ChangeEncoding :call vve#encode#VisualChangeEncoding(<f-args>)
 
 let g:vve_loaded = 1
