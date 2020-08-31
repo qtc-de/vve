@@ -3,6 +3,7 @@ from vve.encode import encode_apply, change_encoding
 EOF
 
 let s:encode_dict = {
+    \ "ascii" : "encode_ascii",
     \ "base64" : "encode_base64",
     \ "binary" : "encode_binary",
     \ "hex" : "encode_hex",
@@ -12,6 +13,7 @@ let s:encode_dict = {
     \ }
 
 let s:decode_dict = {
+    \ "ascii" : "decode_ascii",
     \ "base64" : "decode_base64",
     \ "binary" : "decode_binary",
     \ "hex" : "decode_hex",
@@ -22,12 +24,13 @@ let s:decode_dict = {
 
 
 function! vve#encode#ListEncodings(A, L, P)
-    let l:options = "base64\n"
-    let l:options .= "binary\n"
-    let l:options .= "hex\n"
-    let l:options .= "hexstring\n"
-    let l:options .= "url\n"
-    let l:options .= "urlfull"
+    let l:options = "ascii \n"
+    let l:options .= "base64 \n"
+    let l:options .= "binary \n"
+    let l:options .= "hex \n"
+    let l:options .= "hexstring \n"
+    let l:options .= "url \n"
+    let l:options .= "urlfull "
     return l:options
 endfunction
 
