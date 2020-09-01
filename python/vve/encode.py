@@ -9,6 +9,46 @@ import vve.visual
 from vve import VveException
 
 
+def get_entity(string):
+    '''
+    Checks if the specified string is part of the html5 entity set.
+    If this is the case, the corresponding character is returned. If
+    not, the input string is returned.
+
+    Paramaters:
+        string              (string)            Entity
+
+    Returns:
+        result              (string)            Corresponding char
+    '''
+    if string not in html.entities.html5:
+        return string
+
+    return html.entities.html5[string]
+
+
+def encode_mixed(string):
+    '''
+    Takes a string as input and converts it to a bytes object.
+    Each codepoint is attempted to be converted as an ascii character
+    first. If this is not possible, utf-8 convertion is used.
+
+    Paramaters:
+        string              (string)            Input string
+
+    Returns:
+        encoded             (bytes)             decoded nyte array
+    '''
+    decoded = b''
+    for char in string:
+        try:
+            decoded += bytes([ord(char)])
+        except ValueError:
+            decoded += char.encode('utf-8')
+
+    return decoded
+
+
 def encode_base64(data):
     '''
     Applies base64 encoding to the input data. Input can be supplied
@@ -216,6 +256,20 @@ def decode_hex(string, raw=False):
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
 
+def encode_url(data):
+    '''
+    Applies URL encoding to the input data for URL special characters.
+    Input data can be specified as string or raw bytes.
+
+    Parameters:
+        data                (string/bytes)      Input data
+
+    Returns:
+        string              (string)            URL encoded output
+    '''
+    return urllib.parse.quote_plus(data)
+
+
 def encode_url_full(data):
     '''
     Takes a string or raw bytes as input and applies URL encoding to
@@ -240,21 +294,25 @@ def encode_url_full(data):
     return return_value
 
 
-def encode_url(data):
+def decode_url(string, raw=False):
     '''
-    Applies URL encoding to the input data for URL special characters.
-    Input data can be specified as string or raw bytes.
+    Applies URL decoding to the input string.
 
     Parameters:
-        data                (string/bytes)      Input data
+        string              (string)            Input string
+        raw                 (boolean)           Return as bytes
 
     Returns:
-        string              (string)            URL encoded output
+        string              (string)            URL decoded output
     '''
-    return urllib.parse.quote_plus(data)
+    decoded = urllib.parse.unquote_plus(string)
+    if not raw:
+        return decoded
+
+    return decoded.encode('utf-8')
 
 
-def decode_url(string, raw=False):
+def decode_url_full(string, raw=False):
     '''
     Applies URL decoding to the input string. Output can be obtained as
     utf-8 string or raw byes.
@@ -266,41 +324,34 @@ def decode_url(string, raw=False):
     Returns:
         string              (string/bytes)      URL decoded output
     '''
-    decoded = urllib.parse.unquote_plus(string)
+    replacer = lambda x: chr(int(x.group().replace('%', ''), 16))
+    string = re.sub(r'%[0-9a-fA-F]{2}', replacer, string)
+    string = string.replace("+", " ")
 
+    decoded = encode_mixed(string)
     if raw:
-        return decoded.encode('utf-8')
+        return decoded
 
-    return decoded
+    try:
+        return decoded.decode('utf-8')
+    except:
+        raise VveException("Decoded result cannot be encoded as UTF-8.")
 
 
-def encode_xml(string):
+def encode_html(string):
     '''
-    Applies XML encoding to the input string for XML special characters.
+    Applies HTML encoding to special characrers inside the input string.
 
     Parameters:
         string              (string)            Input string
 
     Returns:
-        string              (string)            XML encoded output
+        string              (string)            HTML encoded output
     '''
     if isinstance(string, bytes):
-        raise VveException("XML encoding is only supported for UTF-8 data.")
+        raise VveException("HTML encoding is only supported for UTF-8 data.")
 
-    return xml.sax.saxutils.escape(string)
-
-
-def decode_xml(string):
-    '''
-    Applies XML decoding to the input string.
-
-    Parameters:
-        string              (string)            Input string
-
-    Returns:
-        string              (string)            XML decoded output
-    '''
-    return xml.sax.saxutils.unescape(string)
+    return html.escape(string)
 
 
 def encode_html_full(data):
@@ -327,22 +378,6 @@ def encode_html_full(data):
     return return_value
 
 
-def encode_html(string):
-    '''
-    Applies HTML encoding to special characrers inside the input string.
-
-    Parameters:
-        string              (string)            Input string
-
-    Returns:
-        string              (string)            HTML encoded output
-    '''
-    if isinstance(string, bytes):
-        raise VveException("HTML encoding is only supported for UTF-8 data.")
-
-    return html.escape(string)
-
-
 def decode_html(string):
     '''
     Applies HTML decoding to the input string.
@@ -356,21 +391,99 @@ def decode_html(string):
     return html.unescape(string)
 
 
-def encode_ascii(byte_value):
+def decode_html_full(string, raw=False):
     '''
-    Takes a bytes object and converts each ASCII byte into its character representation.
-    Bytes that are out of the ASCII range are displayed as escape sequence \\xXX. This
-    encoding can only be applied on bytes input and is only ment to be used in 
-    ChangeEncoding operations.
+    Applies HTML decoding to the input string.
+
+    Parameters:
+        string              (string)            Input string
+        raw                 (boolean)           Return as bytes
+
+    Returns:
+        string              (string/bytes)      HTML decoded output
+    '''
+    replacer = lambda x: chr(int(x.group().replace('&#x', '').replace(';', ''), 16))
+    string = re.sub(r'&#x[0-9a-fA-F]{2};', replacer, string)
+
+    replacer = lambda x: chr(int(x.group().replace('&#', '').replace(';', ''), 10))
+    string = re.sub(r'&#[0-9]{1,6};', replacer, string)
+
+    replacer = lambda x: get_entity(x.group().replace('&', ''))
+    string = re.sub(r'&[a-zA-Z]+;', replacer, string)
+
+    decoded = encode_mixed(string)
+
+    if raw:
+        return decoded
+
+    try:
+        decoded = decoded.decode('utf-8')
+    except:
+        raise VveException("Decoded result cannot be encoded as UTF-8.")
+
+    return decoded
+
+
+def encode_xml(string):
+    '''
+    Applies XML encoding to the input string for XML special characters.
+
+    Parameters:
+        string              (string)            Input string
+
+    Returns:
+        string              (string)            XML encoded output
+    '''
+    if isinstance(string, bytes):
+        raise VveException("XML encoding is only supported for UTF-8 data.")
+
+    return xml.sax.saxutils.escape(string)
+
+
+def encode_xml_full(string):
+    '''
+    Currently just the same as encode_html_full.
+    '''
+    return encode_html_full(string)
+
+
+def decode_xml(string):
+    '''
+    Applies XML decoding to the input string.
+
+    Parameters:
+        string              (string)            Input string
+
+    Returns:
+        string              (string)            XML decoded output
+    '''
+    return xml.sax.saxutils.unescape(string)
+
+
+def decode_xml_full(string):
+    '''
+    Currently just the same as decode_html_full
+    '''
+    return decode_html_full(string)
+
+
+def encode_ascii(data):
+    '''
+    Takes a string or bytes object and converts each ASCII byte into its character
+    representation.  Bytes that are out of the ASCII range are displayed as escape
+    sequence \\xXX. 
 
     Paramaters:
-        byte_value          (bytes)             Input data
+        data                (string/bytes)      Input data
 
     Returns:
         ascii_value         (string)            ASCII output
     '''
+    if not isinstance(data, bytes):
+        data = data.encode('utf-8')
+
     result = ''
-    for byte in byte_value:
+    for byte in data:
 
         if byte > 0x1f and byte < 0x7f:
             result += chr(byte)
@@ -400,14 +513,17 @@ def decode_ascii(string, raw=False):
     replacer = lambda x: chr(int(x.group().replace('\\x', ''), 16))
     string = re.sub(r'\\x[0-9a-fA-F]{2}', replacer, string)
 
-    decoded = b''
-    for char in string:
-        decoded += bytes([ord(char)])
+    decoded = encode_mixed(string)
 
     if raw:
         return decoded
 
-    return result.decode('utf-8')
+    try:
+        decoded = decoded.decode('utf-8')
+    except:
+        raise VveException("Decoded result cannot be encoded as UTF-8.")
+
+    return decoded
 
 
 local_functions = locals()

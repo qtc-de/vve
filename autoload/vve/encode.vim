@@ -8,8 +8,10 @@ let s:encode_dict = {
     \ "binary" : "encode_binary",
     \ "hex" : "encode_hex",
     \ "hexstring" : "encode_hex_string",
+    \ "htmlfull" : "encode_html_full",
     \ "url" : "encode_url",
-    \ "url_full" : "encode_url_full"
+    \ "urlfull" : "encode_url_full",
+    \ "xmlfull" : "encode_xml_full",
     \ }
 
 let s:decode_dict = {
@@ -18,8 +20,10 @@ let s:decode_dict = {
     \ "binary" : "decode_binary",
     \ "hex" : "decode_hex",
     \ "hexstring" : "decode_hex_string",
+    \ "htmlfull" : "decode_html_full",
     \ "url" : "decode_url",
-    \ "url_full" : "decode_url"
+    \ "urlfull" : "decode_url_full",
+    \ "xmlfull" : "decode_xml_full",
     \ }
 
 
@@ -29,90 +33,51 @@ function! vve#encode#ListEncodings(A, L, P)
     let l:options .= "binary \n"
     let l:options .= "hex \n"
     let l:options .= "hexstring \n"
+    let l:options .= "htmlfull \n"
     let l:options .= "url \n"
-    let l:options .= "urlfull "
+    let l:options .= "urlfull \n"
+    let l:options .= "xmlfull "
     return l:options
 endfunction
 
-function! vve#encode#Dispatch(function_name, type)
+
+function! vve#encode#GetVisualMode(type)
     if a:type == 'char'
         execute "normal! `[v`]\<ESC>"
-        execute "python3 encode_apply('" . a:function_name . "', 'v')"
+        return 'v'
 
     elseif a:type == 'line'
         execute "normal! `[V`]\<ESC>"
-        execute "python3 encode_apply('" . a:function_name . "', 'V')"
+        return 'V'
 
     elseif a:type =~ '^\(v\|V\|\)$'
-        execute "python3 encode_apply('" . a:function_name . "', '" . a:type . "')"
+        return a:type
+
+    else
+        return "Nope"
     endif
 endfunction
 
-function! vve#encode#VisualEncodeBase64(type)
-    call vve#encode#Dispatch('encode_base64', a:type)
+
+function! vve#encode#Dispatch(function_name, type)
+    let l:type = vve#encode#GetVisualMode(a:type)
+
+    if l:type == "Nope"
+        echom "[-] Unknown motion / visual type: " . a:type
+        return
+    endif
+
+    execute "python3 encode_apply('" . a:function_name . "', '" . l:type . "')"
 endfunction
 
-function! vve#encode#VisualDecodeBase64(type)
-    call vve#encode#Dispatch('decode_base64', a:type)
-endfunction
 
-function! vve#encode#VisualEncodeBinary(type)
-    call vve#encode#Dispatch('encode_binary', a:type)
-endfunction
+function! vve#encode#VisualChangeEncoding(from, to, type)
+    let l:type = vve#encode#GetVisualMode(a:type)
 
-function! vve#encode#VisualDecodeBinary(type)
-    call vve#encode#Dispatch('decode_binary', a:type)
-endfunction
-
-function! vve#encode#VisualEncodeHexString(type)
-    call vve#encode#Dispatch('encode_hex_string', a:type)
-endfunction
-
-function! vve#encode#VisualDecodeHexString(type)
-    call vve#encode#Dispatch('decode_hex_string', a:type)
-endfunction
-
-function! vve#encode#VisualEncodeHex(type)
-    call vve#encode#Dispatch('encode_hex', a:type)
-endfunction
-
-function! vve#encode#VisualDecodeHex(type)
-    call vve#encode#Dispatch('decode_hex', a:type)
-endfunction
-
-function! vve#encode#VisualEncodeURL(type)
-    call vve#encode#Dispatch('encode_url', a:type)
-endfunction
-
-function! vve#encode#VisualDecodeURL(type)
-    call vve#encode#Dispatch('decode_url', a:type)
-endfunction
-
-function! vve#encode#VisualEncodeURLFull(type)
-    call vve#encode#Dispatch('encode_url_full', a:type)
-endfunction
-
-function! vve#encode#VisualEncodeHtmlFull(type)
-    call vve#encode#Dispatch('encode_html_full', a:type)
-endfunction
-
-function! vve#encode#VisualEncodeXml(type)
-    call vve#encode#Dispatch('encode_xml', a:type)
-endfunction
-
-function! vve#encode#VisualDecodeXml(type)
-    call vve#encode#Dispatch('decode_xml', a:type)
-endfunction 
-
-function! vve#encode#VisualEncodeHtml(type)
-    call vve#encode#Dispatch('encode_html', a:type)
-endfunction
-
-function! vve#encode#VisualDecodeHtml(type)
-    call vve#encode#Dispatch('decode_html', a:type)
-endfunction 
-
-function! vve#encode#VisualChangeEncoding(from, to)
+    if l:type == "Nope"
+        echom "[-] Unknown motion / visual type: " . a:type
+        return
+    endif
 
     if !has_key(s:decode_dict, a:from)
         echom "[-] Unknown encoding: " . a:from
@@ -121,15 +86,190 @@ function! vve#encode#VisualChangeEncoding(from, to)
     elseif !has_key(s:encode_dict, a:to)
         echom "[-] Unknown encoding: " . a:to
         return
-
-    elseif visualmode() == ""
-        echom "[-] ChangeEncoding has to be called after or from a visual selection."
-        return
     endif
 
     let l:from_function = s:decode_dict[a:from]
     let l:to_function = s:encode_dict[a:to]
 
-    execute "python3 change_encoding('" . l:from_function . "', '" . l:to_function . "', '" . visualmode() . "')"
+    execute "python3 change_encoding('" . l:from_function . "', '" . l:to_function . "', '" . l:type . "')"
+endfunction
 
+
+function! vve#encode#VisualEncodeAscii(type)
+    call vve#encode#Dispatch('encode_ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeAscii(type)
+    call vve#encode#Dispatch('decode_ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeBase64(type)
+    call vve#encode#Dispatch('encode_base64', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeBase64(type)
+    call vve#encode#Dispatch('decode_base64', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeBinary(type)
+    call vve#encode#Dispatch('encode_binary', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeBinary(type)
+    call vve#encode#Dispatch('decode_binary', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeHexString(type)
+    call vve#encode#Dispatch('encode_hex_string', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeHexString(type)
+    call vve#encode#Dispatch('decode_hex_string', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeHex(type)
+    call vve#encode#Dispatch('encode_hex', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeHex(type)
+    call vve#encode#Dispatch('decode_hex', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeURL(type)
+    call vve#encode#Dispatch('encode_url', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeURL(type)
+    call vve#encode#Dispatch('decode_url', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeURLFull(type)
+    call vve#encode#Dispatch('encode_url_full', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeURLFull(type)
+    call vve#encode#Dispatch('decode_url_full', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeHtmlFull(type)
+    call vve#encode#Dispatch('encode_html_full', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeXml(type)
+    call vve#encode#Dispatch('encode_xml', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeXml(type)
+    call vve#encode#Dispatch('decode_xml', a:type)
+endfunction 
+
+
+function! vve#encode#VisualEncodeHtml(type)
+    call vve#encode#Dispatch('encode_html', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeHtml(type)
+    call vve#encode#Dispatch('decode_html', a:type)
+endfunction 
+
+
+function! vve#encode#VisualDecodeHtmlFull(type)
+    call vve#encode#Dispatch('decode_html_full', a:type)
+endfunction 
+
+
+function! vve#encode#VisualEncodeBase64FromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'base64', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeBase64ToAscii(type)
+    call vve#encode#VisualChangeEncoding('base64', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeBinaryFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'binary', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeBinaryToAscii(type)
+    call vve#encode#VisualChangeEncoding('binary', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeHexStringFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'hexstring', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeHexStringToAscii(type)
+    call vve#encode#VisualChangeEncoding('hexstring', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeHexFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'hex', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeHexToAscii(type)
+    call vve#encode#VisualChangeEncoding('hex', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeURLFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'url', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeURLToAscii(type)
+    call vve#encode#VisualChangeEncoding('url', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeURLFullFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'urlfull', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeURLFullToAscii(type)
+    call vve#encode#VisualChangeEncoding('urlfull', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeHtmlFullToAscii(type)
+    call vve#encode#VisualChangeEncoding('htmlfull', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeHtmlFullFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'htmlfull', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeXmlFullToAscii(type)
+    call vve#encode#VisualChangeEncoding('xmlfull', 'ascii', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeXmlFullFromAscii(type)
+    call vve#encode#VisualChangeEncoding('ascii', 'xmlfull', a:type)
 endfunction

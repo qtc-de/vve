@@ -17,6 +17,7 @@ sys.path.insert(0, py_root_dir)
 EOF
 
 " encoding functions
+nnoremap <leader>ea :set operatorfunc=vve#encode#VisualEncodeAscii<CR>g@
 nnoremap <leader>eb :set operatorfunc=vve#encode#VisualEncodeBinary<CR>g@
 nnoremap <leader>eB :set operatorfunc=vve#encode#VisualEncodeBase64<CR>g@
 nnoremap <leader>ee :set operatorfunc=vve#encode#VisualEncodeHtml<CR>g@
@@ -27,18 +28,43 @@ nnoremap <leader>eu :set operatorfunc=vve#encode#VisualEncodeURL<CR>g@
 nnoremap <leader>eU :set operatorfunc=vve#encode#VisualEncodeURLFull<CR>g@
 nnoremap <leader>ex :set operatorfunc=vve#encode#VisualEncodeXml<CR>g@
 nnoremap <leader>eX :set operatorfunc=vve#encode#VisualEncodeXml<CR>g@
+
+nnoremap <leader>da :set operatorfunc=vve#encode#VisualDecodeAscii<CR>g@
 nnoremap <leader>db :set operatorfunc=vve#encode#VisualDecodeBinary<CR>g@
 nnoremap <leader>dB :set operatorfunc=vve#encode#VisualDecodeBase64<CR>g@
 nnoremap <leader>dh :set operatorfunc=vve#encode#VisualDecodeHex<CR>g@
 nnoremap <leader>dH :set operatorfunc=vve#encode#VisualDecodeHexString<CR>g@
 nnoremap <leader>du :set operatorfunc=vve#encode#VisualDecodeURL<CR>g@
-nnoremap <leader>dU :set operatorfunc=vve#encode#VisualDecodeURL<CR>g@
+nnoremap <leader>dU :set operatorfunc=vve#encode#VisualDecodeURLFull<CR>g@
 nnoremap <leader>de :set operatorfunc=vve#encode#VisualDecodeHtml<CR>g@
-nnoremap <leader>dE :set operatorfunc=vve#encode#VisualDecodeHtml<CR>g@
+nnoremap <leader>dE :set operatorfunc=vve#encode#VisualDecodeHtmlFull<CR>g@
 nnoremap <leader>dx :set operatorfunc=vve#encode#VisualDecodeXml<CR>g@
-nnoremap <leader>dX :set operatorfunc=vve#encode#VisualDecodeXml<CR>g@
+nnoremap <leader>dX :set operatorfunc=vve#encode#VisualDecodeHtmlFull<CR>g@
+
+nnoremap <leader>Eb :set operatorfunc=vve#encode#VisualEncodeBinaryFromAscii<CR>g@
+nnoremap <leader>EB :set operatorfunc=vve#encode#VisualEncodeBase64FromAscii<CR>g@
+nnoremap <leader>Eh :set operatorfunc=vve#encode#VisualEncodeHexFromAscii<CR>g@
+nnoremap <leader>EH :set operatorfunc=vve#encode#VisualEncodeHexStringFromAscii<CR>g@
+nnoremap <leader>Ee :set operatorfunc=vve#encode#VisualEncodeHtmlFullFromAscii<CR>g@
+nnoremap <leader>EE :set operatorfunc=vve#encode#VisualEncodeHtmlFullFromAscii<CR>g@
+nnoremap <leader>Eu :set operatorfunc=vve#encode#VisualEncodeURLFromAscii<CR>g@
+nnoremap <leader>EU :set operatorfunc=vve#encode#VisualEncodeURLFullFromAscii<CR>g@
+nnoremap <leader>Ex :set operatorfunc=vve#encode#VisualEncodeXmlFullFromAscii<CR>g@
+nnoremap <leader>EX :set operatorfunc=vve#encode#VisualEncodeXmlFullFromAscii<CR>g@
+
+nnoremap <leader>Db :set operatorfunc=vve#encode#VisualDecodeBinaryToAscii<CR>g@
+nnoremap <leader>DB :set operatorfunc=vve#encode#VisualDecodeBase64ToAscii<CR>g@
+nnoremap <leader>Dh :set operatorfunc=vve#encode#VisualDecodeHexToAscii<CR>g@
+nnoremap <leader>DH :set operatorfunc=vve#encode#VisualDecodeHexStringToAscii<CR>g@
+nnoremap <leader>Du :set operatorfunc=vve#encode#VisualDecodeURLToAscii<CR>g@
+nnoremap <leader>DU :set operatorfunc=vve#encode#VisualDecodeURLFullToAscii<CR>g@
+nnoremap <leader>De :set operatorfunc=vve#encode#VisualDecodeHtmlFullToAscii<CR>g@
+nnoremap <leader>DE :set operatorfunc=vve#encode#VisualDecodeHtmlFullToAscii<CR>g@
+nnoremap <leader>Dx :set operatorfunc=vve#encode#VisualDecodeXmlFullToAscii<CR>g@
+nnoremap <leader>DX :set operatorfunc=vve#encode#VisualDecodeXmlFullToAscii<CR>g@
 
 vnoremap <leader>ce :<c-u>ChangeEncoding 
+vnoremap <leader>ea :<c-u>call vve#encode#VisualEncodeAscii(visualmode())<CR>
 vnoremap <leader>eb :<c-u>call vve#encode#VisualEncodeBinary(visualmode())<CR>
 vnoremap <leader>eB :<c-u>call vve#encode#VisualEncodeBase64(visualmode())<CR>
 vnoremap <leader>ee :<c-u>call vve#encode#VisualEncodeHtml(visualmode())<CR>
@@ -49,18 +75,43 @@ vnoremap <leader>eu :<c-u>call vve#encode#VisualEncodeURL(visualmode())<CR>
 vnoremap <leader>eU :<c-u>call vve#encode#VisualEncodeURLFull(visualmode())<CR>
 vnoremap <leader>ex :<c-u>call vve#encode#VisualEncodeXml(visualmode())<CR>
 vnoremap <leader>eX :<c-u>call vve#encode#VisualEncodeXml(visualmode())<CR>
+
+vnoremap <leader>da :<c-u>call vve#encode#VisualDecodeAscii(visualmode())<CR>
 vnoremap <leader>db :<c-u>call vve#encode#VisualDecodeBinary(visualmode())<CR>
 vnoremap <leader>dB :<c-u>call vve#encode#VisualDecodeBase64(visualmode())<CR>
 vnoremap <leader>dh :<c-u>call vve#encode#VisualDecodeHex(visualmode())<CR>
 vnoremap <leader>dH :<c-u>call vve#encode#VisualDecodeHexString(visualmode())<CR>
 vnoremap <leader>du :<c-u>call vve#encode#VisualDecodeURL(visualmode())<CR>
-vnoremap <leader>dU :<c-u>call vve#encode#VisualDecodeURL(visualmode())<CR>
+vnoremap <leader>dU :<c-u>call vve#encode#VisualDecodeURLFull(visualmode())<CR>
 vnoremap <leader>de :<c-u>call vve#encode#VisualDecodeHtml(visualmode())<CR>
-vnoremap <leader>dE :<c-u>call vve#encode#VisualDecodeHtml(visualmode())<CR>
+vnoremap <leader>dE :<c-u>call vve#encode#VisualDecodeHtmlFull(visualmode())<CR>
 vnoremap <leader>dx :<c-u>call vve#encode#VisualDecodeXml(visualmode())<CR>
-vnoremap <leader>dX :<c-u>call vve#encode#VisualDecodeXml(visualmode())<CR>
+vnoremap <leader>dX :<c-u>call vve#encode#VisualDecodeHtmlFull(visualmode())<CR>
 
-" number conversion and inplace arithmetic
+vnoremap <leader>Eb :<c-u>call vve#encode#VisualEncodeBinaryFromAscii(visualmode())<CR>
+vnoremap <leader>EB :<c-u>call vve#encode#VisualEncodeBase64FromAscii(visualmode())<CR>
+vnoremap <leader>Eh :<c-u>call vve#encode#VisualEncodeHexFromAscii(visualmode())<CR>
+vnoremap <leader>EH :<c-u>call vve#encode#VisualEncodeHexStringFromAscii(visualmode())<CR>
+vnoremap <leader>Ee :<c-u>call vve#encode#VisualEncodeHtmlFullFromAscii(visualmode())<CR>
+vnoremap <leader>EE :<c-u>call vve#encode#VisualEncodeHtmlFullFromAscii(visualmode())<CR>
+vnoremap <leader>Eu :<c-u>call vve#encode#VisualEncodeURLFromAscii(visualmode())<CR>
+vnoremap <leader>EU :<c-u>call vve#encode#VisualEncodeURLFullFromAscii(visualmode())<CR>
+vnoremap <leader>Ex :<c-u>call vve#encode#VisualEncodeXmlFullFromAscii(visualmode())<CR>
+vnoremap <leader>EX :<c-u>call vve#encode#VisualEncodeXmlFullFromAscii(visualmode())<CR>
+
+vnoremap <leader>Db :<c-u>call vve#encode#VisualDecodeBinaryToAscii(visualmode())<CR>
+vnoremap <leader>DB :<c-u>call vve#encode#VisualDecodeBase64ToAscii(visualmode())<CR>
+vnoremap <leader>Dh :<c-u>call vve#encode#VisualDecodeHexToAscii(visualmode())<CR>
+vnoremap <leader>DH :<c-u>call vve#encode#VisualDecodeHexStringToAscii(visualmode())<CR>
+vnoremap <leader>Du :<c-u>call vve#encode#VisualDecodeURLToAscii(visualmode())<CR>
+vnoremap <leader>DU :<c-u>call vve#encode#VisualDecodeURLFullToAscii(visualmode())<CR>
+vnoremap <leader>De :<c-u>call vve#encode#VisualDecodeHtmlFullToAscii(visualmode())<CR>
+vnoremap <leader>DE :<c-u>call vve#encode#VisualDecodeHtmlFullToAscii(visualmode())<CR>
+vnoremap <leader>Dx :<c-u>call vve#encode#VisualDecodeXmlFullToAscii(visualmode())<CR>
+vnoremap <leader>DX :<c-u>call vve#encode#VisualDecodeXmlFullToAscii(visualmode())<CR>
+
+
+" number conversion :<c-u>call and inplace arithmetic
 nnoremap <leader>th :set operatorfunc=vve#numbers#VisualToHex<CR>g@
 nnoremap <leader>tH :set operatorfunc=vve#numbers#VisualToHexString<CR>g@
 nnoremap <leader>tb :set operatorfunc=vve#numbers#VisualToBin<CR>g@
@@ -107,6 +158,6 @@ command! -nargs=1 -complete=file InsertFile :exec "normal i" . fnamemodify(<q-ar
 command! -nargs=1 -complete=file AppendFile :exec "normal a" . fnamemodify(<q-args>, ":t") . "\<esc>"
 command! -nargs=1 -complete=file InsertPath :exec "normal i" . <q-args> . "\<esc>"
 command! -nargs=1 -complete=file AppendPath :exec "normal a" . <q-args> . "\<esc>"
-command! -nargs=+ -complete=custom,vve#encode#ListEncodings ChangeEncoding :call vve#encode#VisualChangeEncoding(<f-args>)
+command! -nargs=+ -complete=custom,vve#encode#ListEncodings ChangeEncoding :call vve#encode#VisualChangeEncoding(<f-args>, visualmode())
 
 let g:vve_loaded = 1
