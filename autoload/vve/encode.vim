@@ -175,9 +175,19 @@ function! vve#encode#VisualEncodeXml(type)
 endfunction
 
 
+function! vve#encode#VisualEncodeXmlFull(type)
+    call vve#encode#Dispatch('encode_xml_full', a:type)
+endfunction
+
+
 function! vve#encode#VisualDecodeXml(type)
     call vve#encode#Dispatch('decode_xml', a:type)
-endfunction 
+endfunction
+
+
+function! vve#encode#VisualDecodeXmlFull(type)
+    call vve#encode#Dispatch('decode_xml_full', a:type)
+endfunction
 
 
 function! vve#encode#VisualEncodeHtml(type)
@@ -187,12 +197,12 @@ endfunction
 
 function! vve#encode#VisualDecodeHtml(type)
     call vve#encode#Dispatch('decode_html', a:type)
-endfunction 
+endfunction
 
 
 function! vve#encode#VisualDecodeHtmlFull(type)
     call vve#encode#Dispatch('decode_html_full', a:type)
-endfunction 
+endfunction
 
 
 function! vve#encode#VisualEncodeBase64FromAscii(type)

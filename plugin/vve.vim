@@ -27,7 +27,7 @@ nnoremap <leader>eH :set operatorfunc=vve#encode#VisualEncodeHexString<CR>g@
 nnoremap <leader>eu :set operatorfunc=vve#encode#VisualEncodeURL<CR>g@
 nnoremap <leader>eU :set operatorfunc=vve#encode#VisualEncodeURLFull<CR>g@
 nnoremap <leader>ex :set operatorfunc=vve#encode#VisualEncodeXml<CR>g@
-nnoremap <leader>eX :set operatorfunc=vve#encode#VisualEncodeXml<CR>g@
+nnoremap <leader>eX :set operatorfunc=vve#encode#VisualEncodeXmlFull<CR>g@
 
 nnoremap <leader>da :set operatorfunc=vve#encode#VisualDecodeAscii<CR>g@
 nnoremap <leader>db :set operatorfunc=vve#encode#VisualDecodeBinary<CR>g@
@@ -74,7 +74,7 @@ vnoremap <leader>eH :<c-u>call vve#encode#VisualEncodeHexString(visualmode())<CR
 vnoremap <leader>eu :<c-u>call vve#encode#VisualEncodeURL(visualmode())<CR>
 vnoremap <leader>eU :<c-u>call vve#encode#VisualEncodeURLFull(visualmode())<CR>
 vnoremap <leader>ex :<c-u>call vve#encode#VisualEncodeXml(visualmode())<CR>
-vnoremap <leader>eX :<c-u>call vve#encode#VisualEncodeXml(visualmode())<CR>
+vnoremap <leader>eX :<c-u>call vve#encode#VisualEncodeXmlFull(visualmode())<CR>
 
 vnoremap <leader>da :<c-u>call vve#encode#VisualDecodeAscii(visualmode())<CR>
 vnoremap <leader>db :<c-u>call vve#encode#VisualDecodeBinary(visualmode())<CR>
@@ -111,7 +111,7 @@ vnoremap <leader>Dx :<c-u>call vve#encode#VisualDecodeXmlFullToAscii(visualmode(
 vnoremap <leader>DX :<c-u>call vve#encode#VisualDecodeXmlFullToAscii(visualmode())<CR>
 
 
-" number conversion :<c-u>call and inplace arithmetic
+" number conversion and inplace arithmetic
 nnoremap <leader>th :set operatorfunc=vve#numbers#VisualToHex<CR>g@
 nnoremap <leader>tH :set operatorfunc=vve#numbers#VisualToHexString<CR>g@
 nnoremap <leader>tb :set operatorfunc=vve#numbers#VisualToBin<CR>g@

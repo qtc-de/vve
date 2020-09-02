@@ -460,11 +460,11 @@ def decode_xml(string):
     return xml.sax.saxutils.unescape(string)
 
 
-def decode_xml_full(string):
+def decode_xml_full(string, raw=False):
     '''
     Currently just the same as decode_html_full
     '''
-    return decode_html_full(string)
+    return decode_html_full(string, raw)
 
 
 def encode_ascii(data):
