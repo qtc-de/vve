@@ -3,7 +3,7 @@ import html
 import base64
 import binascii
 import urllib.parse
-import xml.sax.saxutils 
+import xml.sax.saxutils
 
 import vve.visual
 from vve import VveException
@@ -164,7 +164,7 @@ def decode_binary(string, raw=False):
 def encode_hex_string(data):
     '''
     Accepts a string or bytes input and converts it into a hex-string
-    (\\x..\\x..\\x..). 
+    (\\x..\\x..\\x..).
 
     Parameters:
         data                (string/bytes)      Input data
@@ -206,11 +206,11 @@ def decode_hex_string(string, raw=False):
     if raw:
         return bytes(b_array)
 
-    try: 
+    try:
         return b_array.decode('utf-8')
     except:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
-        
+
 
 def encode_hex(data):
     '''
@@ -242,7 +242,7 @@ def decode_hex(string, raw=False):
     Returns:
         string              (string/bytes)      UTF-8 formatted output
     '''
-    try: 
+    try:
         b_array = bytearray.fromhex(string)
     except:
         raise VveException('Input is not in hex format.')
@@ -250,7 +250,7 @@ def decode_hex(string, raw=False):
     if raw:
         return bytes(b_array)
 
-    try: 
+    try:
         return b_array.decode('utf-8')
     except:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
@@ -471,7 +471,7 @@ def encode_ascii(data):
     '''
     Takes a string or bytes object and converts each ASCII byte into its character
     representation.  Bytes that are out of the ASCII range are displayed as escape
-    sequence \\xXX. 
+    sequence \\xXX.
 
     Paramaters:
         data                (string/bytes)      Input data
@@ -572,6 +572,7 @@ def change_encoding(decode_function, encode_function, visualmode):
     funcref_decode = local_functions[decode_function]
     funcref_chained = chain(funcref_decode, funcref_encode)
     vve.visual.visual_apply(funcref_chained, visualmode)
+
 
 def encode_apply(function_name, visualmode):
     '''

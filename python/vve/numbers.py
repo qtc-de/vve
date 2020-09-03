@@ -3,10 +3,11 @@ import vim
 
 import vve.visual
 
+
 def to_hex(string):
     '''
     Takes an integer value as a string and converts it in the corresponding
-    hex format. The returned hex string is always padded with '0x' and is 
+    hex format. The returned hex string is always padded with '0x' and is
     aligned to a multiple of two bytes.
 
     Parameters:
@@ -29,7 +30,7 @@ def to_hex(string):
 def to_bin(string):
     '''
     Takes an integer value as a string and converts it in the corresponding
-    binary format. The returned binary string is always padded with '0b' and 
+    binary format. The returned binary string is always padded with '0b' and
     aligned to a multiple of eight bits.
 
     Parameters:
@@ -72,7 +73,7 @@ def to_oct(string):
 def to_dec(string):
     '''
     Takes an integer value as a string and converts it in the corresponding
-    decimal format. 
+    decimal format.
 
     Parameters:
         string              (string)            Integer value as string.
@@ -108,7 +109,7 @@ def to_hex_string(string):
     except Exception as error:
         print("[-] to_hex_string - Unexpected Error")
         print("[-] Error message: {}".format(error))
-        returnValue = string 
+        returnValue = string
     return returnValue
 
 
@@ -129,14 +130,14 @@ def from_hex_string(string):
     except Exception as error:
         print("[-] from_hex_string - Unexpected Error")
         print("[-] Error message: {}".format(error))
-        return_value = string 
+        return_value = string
     return return_value
 
 
 def remember_format(string):
     '''
     Small helper function which determines the input format of a number representing
-    string and that returns the corresponding converter function for the back 
+    string and that returns the corresponding converter function for the back
     transformation.
 
     Parameters:
@@ -236,6 +237,8 @@ def div(number1):
 
 
 local_functions = locals()
+
+
 def numbers_apply(function_name, visualmode):
     '''
     Just a helper function that applies {function_name} to the last

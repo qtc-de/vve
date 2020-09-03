@@ -3,9 +3,10 @@ import vim
 
 import vve.visual
 
+
 def _get_hex_format(hs):
     '''
-    Checks wether a supplied hex-string is a plain hexstring or a 
+    Checks wether a supplied hex-string is a plain hexstring or a
     string with ' \\x..' encoding.
 
     Parameters:
@@ -78,7 +79,7 @@ def string_lower(string):
 
 def swap_endian_hs(hs):
     '''
-    Takes a hexstring (\\x..\\x..\\x.. ...) and simply returns it in 
+    Takes a hexstring (\\x..\\x..\\x.. ...) and simply returns it in
     reverse order (swapped endian).
 
     Parameters:
@@ -94,7 +95,7 @@ def swap_endian_hs(hs):
 
 def swap_endian_plain(hs):
     '''
-    Takes a hexstring (without 0x or \\x) and simply returns it in 
+    Takes a hexstring (without 0x or \\x) and simply returns it in
     reverse order (swapped endian).
 
     Parameters:
