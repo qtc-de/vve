@@ -69,14 +69,14 @@ are displayed as normal, while all others are displayed as escape sequences (e.g
 The following mappings are currently defined (notice that each key combination needs to be prefixed by your \<leader\> key):
 
 
-**Only available in Visual Mode**
+**Visual Mode Only Mappings**
 
 | Key       |Description                                                  |
 |:---------:|-------------------------------------------------------------|
 | ce        |Open ChangeEncoding menu                                     |
 
 
-**Encoding Related Mappings operating on UTF-8**
+**Encoding Related Mappings Operating on UTF-8**
 
 | Key       |Description                                                  |
 |:---------:|-------------------------------------------------------------|
@@ -104,7 +104,7 @@ The following mappings are currently defined (notice that each key combination n
 | dX        |Decode XML Full                                              |
 
 
-**Encoding Related Mappings operating on ASCII**
+**Encoding Related Mappings Operating on ASCII**
 
 | Key       |Description                                                  |
 |:---------:|-------------------------------------------------------------|
@@ -224,7 +224,7 @@ slightly differs depending whether the corresponding operation is an encoding or
   to *ascii* representation (``<leader>Du``), you will get ``\xef\xbf\xbd``. This is because the library
   function tries to apply *UTF-8* encoding, but ``%ff`` is no valid *UTF-8* format.
   The *Full* (alternative) implementation (``<leader>DU``) will decode ``%ff`` to ``\xff`` which is probably
-  what you would expect.
+  what you expect.
 
 In most situation, using the *non-Full* operations should be fine. However, when working with non-printable
 characters, the *non-Full* operations can behave unexpected and using *Full* operations might fix that.
