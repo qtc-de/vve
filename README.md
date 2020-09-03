@@ -23,6 +23,8 @@ features include:
 * Length Calculation
 * [...]
 
+![](https://github.com/qtc-de/vve/workflows/master%20Python%20CI/badge.svg?branch=master)
+![](https://github.com/qtc-de/vve/workflows/develop%20Python%20CI/badge.svg?branch=develop)
 ![vve-example](./resources/vve.gif)
 
 
