@@ -4,6 +4,14 @@ import vim
 import vve.visual
 
 
+def _make_upper(match):
+    '''
+    Helper function that converts the first match group of a regex
+    search to uppercase.
+    '''
+    return match.group(1).upper()
+
+
 def _get_hex_format(hs):
     '''
     Checks wether a supplied hex-string is a plain hexstring or a
@@ -186,8 +194,7 @@ def string_camel_case(string):
     Returns:
         output      (string)            output string in camel case
     '''
-    make_upper = lambda x: x.group(1).upper()
-    output = re.sub(r'_([^_])', make_upper, string)
+    output = re.sub(r'_([^_])', _make_upper, string)
     return output
 
 

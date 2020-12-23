@@ -18,7 +18,7 @@ def to_hex(string):
     '''
     try:
         number = hex(int(string, 0))
-    except:
+    except ValueError:
         print(f"[-] Specified string '{string}' is not a number.")
         return string
 
@@ -41,7 +41,7 @@ def to_bin(string):
     '''
     try:
         number = int(string, 0)
-    except:
+    except ValueError:
         print(f"[-] Specified string '{string}' is not a number.")
         return string
     number = bin(number)[2:]
@@ -64,7 +64,7 @@ def to_oct(string):
     '''
     try:
         number = int(string, 0)
-    except:
+    except ValueError:
         print(f"[-] Specified string '{string}' is not a number.")
         return string
     return oct(number)
@@ -83,7 +83,7 @@ def to_dec(string):
     '''
     try:
         number = int(string, 0)
-    except:
+    except ValueError:
         print(f"[-] Specified string '{string}' is not a number.")
         return string
 
@@ -149,23 +149,23 @@ def remember_format(string):
     try:
         int(string, 10)
         return to_dec
-    except:
+    except ValueError:
         pass
     try:
         int(string, 16)
         return to_hex
-    except:
+    except ValueError:
         pass
     try:
         int(string, 8)
         return to_oct
-    except:
+    except ValueError:
         pass
     try:
         int(string, 2)
         return to_bin
-    except:
-        print("[-] remeber_format - Unable to Determine Input Format")
+    except ValueError:
+        print("[-] remeber_format - Unable to determine input format")
 
 
 def add(number1):

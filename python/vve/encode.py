@@ -9,7 +9,47 @@ import vve.visual
 from vve import VveException
 
 
-def get_entity(string):
+def _replace_html_hex(match):
+    '''
+    Helper function that replaces HTML encoded hex sequences. Has to be used as
+    a funcref within a re.sub statement.
+    '''
+    return chr(int(match.group().replace('&#x', '').replace(';', ''), 16))
+
+
+def _replace_html_dec(match):
+    '''
+    Helper function that replaces HTML encoded decimal sequences. Has to be used as
+    a funcref within a re.sub statement.
+    '''
+    return chr(int(match.group().replace('&#', '').replace(';', ''), 10))
+
+
+def _replace_html_ent(match):
+    '''
+    Helper function that replaces HTML entities. Has to be used as
+    a funcref within a re.sub statement.
+    '''
+    return get_entity(match.group().replace('&', ''), True)
+
+
+def _replace_url(match):
+    '''
+    Helper function that replaces URL encoded characters with their character
+    representation. Has to be used as a funcref within a re.sub statement.
+    '''
+    return chr(int(match.group().replace('%', ''), 16))
+
+
+def _replace_hex(match):
+    '''
+    Helper function that replaces hex encoded characters with their character
+    representation. Has to be used as a funcref within a re.sub statement.
+    '''
+    return chr(int(match.group().replace('\\x', ''), 16))
+
+
+def get_entity(string, prefix=False):
     '''
     Checks if the specified string is part of the html5 entity set.
     If this is the case, the corresponding character is returned. If
@@ -17,12 +57,16 @@ def get_entity(string):
 
     Paramaters:
         string              (string)            Entity
+        prefix              (boolean)           If True, add '&' prefix
 
     Returns:
         result              (string)            Corresponding char
     '''
     if string not in html.entities.html5:
-        return string
+        if prefix:
+            return_value = '&' + string
+
+        return return_value
 
     return html.entities.html5[string]
 
@@ -98,7 +142,7 @@ def decode_base64(string, raw=False):
             count += 1
             continue
 
-        except:
+        except Exception:
             raise VveException("Decoded result cannot be encoded as UTF-8.")
 
     if count >= 3:
@@ -157,7 +201,7 @@ def decode_binary(string, raw=False):
 
     try:
         return b_array.decode('utf-8')
-    except:
+    except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
 
@@ -200,7 +244,7 @@ def decode_hex_string(string, raw=False):
 
     try:
         b_array = bytearray.fromhex(plain)
-    except:
+    except Exception:
         raise VveException("Input is no valid hex string.")
 
     if raw:
@@ -208,7 +252,7 @@ def decode_hex_string(string, raw=False):
 
     try:
         return b_array.decode('utf-8')
-    except:
+    except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
 
@@ -244,7 +288,7 @@ def decode_hex(string, raw=False):
     '''
     try:
         b_array = bytearray.fromhex(string)
-    except:
+    except Exception:
         raise VveException('Input is not in hex format.')
 
     if raw:
@@ -252,7 +296,7 @@ def decode_hex(string, raw=False):
 
     try:
         return b_array.decode('utf-8')
-    except:
+    except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
 
@@ -324,8 +368,7 @@ def decode_url_full(string, raw=False):
     Returns:
         string              (string/bytes)      URL decoded output
     '''
-    replacer = lambda x: chr(int(x.group().replace('%', ''), 16))
-    string = re.sub(r'%[0-9a-fA-F]{2}', replacer, string)
+    string = re.sub(r'%[0-9a-fA-F]{2}', _replace_url, string)
     string = string.replace("+", " ")
 
     decoded = encode_mixed(string)
@@ -334,7 +377,7 @@ def decode_url_full(string, raw=False):
 
     try:
         return decoded.decode('utf-8')
-    except:
+    except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
 
@@ -402,14 +445,9 @@ def decode_html_full(string, raw=False):
     Returns:
         string              (string/bytes)      HTML decoded output
     '''
-    replacer = lambda x: chr(int(x.group().replace('&#x', '').replace(';', ''), 16))
-    string = re.sub(r'&#x[0-9a-fA-F]{2};', replacer, string)
-
-    replacer = lambda x: chr(int(x.group().replace('&#', '').replace(';', ''), 10))
-    string = re.sub(r'&#[0-9]{1,6};', replacer, string)
-
-    replacer = lambda x: get_entity(x.group().replace('&', ''))
-    string = re.sub(r'&[a-zA-Z]+;', replacer, string)
+    string = re.sub(r'&#x[0-9a-fA-F]{2};', _replace_html_hex, string)
+    string = re.sub(r'&#[0-9]{1,6};', _replace_html_dec, string)
+    string = re.sub(r'&[a-zA-Z]+;', _replace_html_ent, string)
 
     decoded = encode_mixed(string)
 
@@ -418,7 +456,7 @@ def decode_html_full(string, raw=False):
 
     try:
         decoded = decoded.decode('utf-8')
-    except:
+    except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
     return decoded
@@ -510,8 +548,7 @@ def decode_ascii(string, raw=False):
     Returns:
         decoded             (string/bytes)      Decoded output
     '''
-    replacer = lambda x: chr(int(x.group().replace('\\x', ''), 16))
-    string = re.sub(r'\\x[0-9a-fA-F]{2}', replacer, string)
+    string = re.sub(r'\\x[0-9a-fA-F]{2}', _replace_hex, string)
 
     decoded = encode_mixed(string)
 
@@ -520,7 +557,7 @@ def decode_ascii(string, raw=False):
 
     try:
         decoded = decoded.decode('utf-8')
-    except:
+    except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
     return decoded
