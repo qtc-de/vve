@@ -2,9 +2,10 @@ import re
 import vim
 
 import vve.visual
+from vve import VveException
 
 
-def to_hex(string):
+def to_hex(string, no_except=False):
     '''
     Takes an integer value as a string and converts it in the corresponding
     hex format. The returned hex string is always padded with '0x' and is
@@ -12,18 +13,20 @@ def to_hex(string):
 
     Parameters:
         string              (string)            Integer value as string.
+        no_except           (boolean)           Silent exception handling
 
     Returns:
         number              (string)            Hex representation of input.
     '''
     try:
-        number = hex(int(string, 0))
+        number = hex(to_number(string))
+
     except ValueError:
-        print(f"[-] Specified string '{string}' is not a number.")
-        return string
+        raise VveException(f"Specified string '{string}' is not an integer number.")
 
     if len(number) % 2:
         number = "0x0" + number[2:]
+
     return number
 
 
@@ -40,13 +43,15 @@ def to_bin(string):
         number              (string)            Binary representation of input.
     '''
     try:
-        number = int(string, 0)
+        number = to_number(string)
+
     except ValueError:
-        print(f"[-] Specified string '{string}' is not a number.")
-        return string
+        raise VveException(f"Specified string '{string}' is not an integer number.")
+
     number = bin(number)[2:]
     while len(number) % 8:
         number = "0" + number
+
     number = "0b" + number
     return number
 
@@ -63,10 +68,11 @@ def to_oct(string):
         number              (string)            Octal representation of input.
     '''
     try:
-        number = int(string, 0)
+        number = to_number(string)
+
     except ValueError:
-        print(f"[-] Specified string '{string}' is not a number.")
-        return string
+        raise VveException(f"Specified string '{string}' is not an integer number.")
+
     return oct(number)
 
 
@@ -82,10 +88,10 @@ def to_dec(string):
         number              (string)            Decimal representation of input.
     '''
     try:
-        number = int(string, 0)
+        number = to_number(string)
+
     except ValueError:
-        print(f"[-] Specified string '{string}' is not a number.")
-        return string
+        raise VveException(f"Specified string '{string}' is not an integer number.")
 
     return str(number)
 
@@ -103,35 +109,31 @@ def to_hex_string(string):
         number              (string)            Hex representation of input.
     '''
     try:
-        number = to_hex(string)[2:]
+        number = to_hex(string, True)[2:]
+        int(number, 16)
         hexList = [number[i:i+2] for i in range(0, len(number), 2)]
-        returnValue = "\\x" + "\\x".join(hexList)
-    except Exception as error:
-        print("[-] to_hex_string - Unexpected Error")
-        print("[-] Error message: {}".format(error))
-        returnValue = string
-    return returnValue
+        return "\\x" + "\\x".join(hexList)
+
+    except ValueError:
+        raise VveException(f"Specified string '{string}' is not an integer number.")
 
 
-def from_hex_string(string):
+def to_number(string):
     '''
-    Takes a hex string and converts it back into a hex number.
+    Takes a string that reprsents a number and converts it to a python number.
+    Hexstrings are also allowed
 
     Parameters:
-        string              (string)            Hexstring.
+        string              (string)            String that represents a number.
 
     Returns:
         number              (string)            Hexnumber representation of input.
     '''
-    try:
-        number = "0x" + re.sub('\\\\x', '', string.decode("utf-8"))
-        int(number, 16)
-        return_value = number
-    except Exception as error:
-        print("[-] from_hex_string - Unexpected Error")
-        print("[-] Error message: {}".format(error))
-        return_value = string
-    return return_value
+    if '\\' in string:
+        number = "0x" + re.sub('\\\\x', '', string)
+        return int(number, 16)
+
+    return int(string, 0)
 
 
 def remember_format(string):
@@ -161,11 +163,9 @@ def remember_format(string):
         return to_oct
     except ValueError:
         pass
-    try:
-        int(string, 2)
-        return to_bin
-    except ValueError:
-        print("[-] remeber_format - Unable to determine input format")
+
+    int(string, 2)
+    return to_bin
 
 
 def add(number1):
@@ -254,3 +254,4 @@ def numbers_apply(function_name, visualmode):
     '''
     funcref = local_functions[function_name]
     vve.visual.visual_apply(funcref, visualmode)
+
