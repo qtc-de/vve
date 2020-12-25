@@ -2,6 +2,7 @@ python3 << EOF
 from vve.encode import encode_apply, change_encoding
 EOF
 
+
 let s:encode_dict = {
     \ "ascii" : "encode_ascii",
     \ "base64" : "encode_base64",
@@ -13,6 +14,7 @@ let s:encode_dict = {
     \ "urlfull" : "encode_url_full",
     \ "xmlfull" : "encode_xml_full",
     \ }
+
 
 let s:decode_dict = {
     \ "ascii" : "decode_ascii",
@@ -41,26 +43,8 @@ function! vve#encode#ListEncodings(A, L, P)
 endfunction
 
 
-function! vve#encode#GetVisualMode(type)
-    if a:type == 'char'
-        execute "normal! `[v`]\<ESC>"
-        return 'v'
-
-    elseif a:type == 'line'
-        execute "normal! `[V`]\<ESC>"
-        return 'V'
-
-    elseif a:type =~ '^\(v\|V\|\)$'
-        return a:type
-
-    else
-        return "Nope"
-    endif
-endfunction
-
-
 function! vve#encode#Dispatch(function_name, type)
-    let l:type = vve#encode#GetVisualMode(a:type)
+    let l:type = vve#utils#GetVisualMode(a:type)
 
     if l:type == "Nope"
         echom "[-] Unknown motion / visual type: " . a:type
@@ -72,7 +56,7 @@ endfunction
 
 
 function! vve#encode#VisualChangeEncoding(from, to, type)
-    let l:type = vve#encode#GetVisualMode(a:type)
+    let l:type = vve#utils#GetVisualMode(a:type)
 
     if l:type == "Nope"
         echom "[-] Unknown motion / visual type: " . a:type

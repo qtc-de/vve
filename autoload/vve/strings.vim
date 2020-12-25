@@ -3,35 +3,25 @@ from vve.strings import strings_apply, strings_invoke
 EOF
 
 function! vve#strings#Dispatch(function_name, type)
+    let l:type = vve#utils#GetVisualMode(a:type)
 
-    if a:type == 'char'
-        execute "normal! `[v`]\<esc>"
-        execute "python3 strings_apply('" . a:function_name . "', 'v')"
-
-    elseif a:type == 'line'
-        execute "normal! `[V`]\<esc>"
-        execute "python3 strings_apply('" . a:function_name . "', 'V')"
-
-    else
-        execute "python3 strings_apply('" . a:function_name . "', '" . a:type . "')"
-
+    if l:type == "Nope"
+        echom "[-] Unknown motion / visual type: " . a:type
+        return
     endif
+
+    execute "python3 strings_apply('" . a:function_name . "', '" . l:type . "')"
 endfunction
 
 function! vve#strings#DispatchInvoke(function_name, type)
+    let l:type = vve#utils#GetVisualMode(a:type)
 
-    if a:type == 'char'
-        execute "normal! `[v`]\<esc>"
-        execute "python3 strings_invoke('" . a:function_name . "')"
-
-    elseif a:type == 'line'
-        execute "normal! `[V`]\<esc>"
-        execute "python3 strings_invoke('" . a:function_name . "')"
-
-    else
-        execute "python3 strings_invoke('" . a:function_name . "')"
-
+    if l:type == "Nope"
+        echom "[-] Unknown motion / visual type: " . a:type
+        return
     endif
+
+    execute "python3 strings_invoke('" . a:function_name . "')"
 endfunction
 
 function! vve#strings#VisualSwapEndian(type)
@@ -43,7 +33,7 @@ function! vve#strings#VisualLength(type)
 endfunction
 
 function! vve#strings#VisualLengthHexString(type)
-    call vve#strings#DispatchInvoke('string_length_hs', a:type)
+    call vve#strings#DispatchInvoke('string_length_hex', a:type)
 endfunction
 
 function! vve#strings#VisualUpper(type)

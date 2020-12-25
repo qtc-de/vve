@@ -2,6 +2,7 @@ import re
 import vim
 
 import vve.visual
+from vve import VveException
 
 
 def _make_upper(match):
@@ -44,10 +45,9 @@ def string_length(string):
     print(len(string))
 
 
-def string_length_hs(string):
+def string_length_hex(string):
     '''
-    A length function for hex-strings (\\x.. format). It simply
-    divides the length by 4 to give the effective number of bytes.
+    A length function for hex inputs (plain 0x.. and \\x.. format).
 
     Parameters:
         string          (string)        input string
@@ -55,8 +55,22 @@ def string_length_hs(string):
     Returns:
         None
     '''
+    if string.startswith("0x"):
+        string = string[2:]
+
+    hex_format = _get_hex_format(string)
+
+    if hex_format == 'plain':
+        length = len(string) // 2
+
+    elif hex_format == 'formatted':
+        length = len(string) // 4
+
+    else:
+        raise VveException(f"Input string '{string}' is not in hex format.")
+
     vim.command('redraw')
-    print(len(string) // 4)
+    print(length)
 
 
 def string_upper(string):
@@ -67,7 +81,7 @@ def string_upper(string):
         string          (string)        input string
 
     Returns:
-        None
+        string          (string)        input string in uppercase
     '''
     return string.upper()
 
@@ -80,7 +94,7 @@ def string_lower(string):
         string          (string)        input string
 
     Returns:
-        None
+        string          (string)        input string in lowercase
     '''
     return string.lower()
 
@@ -234,4 +248,11 @@ def strings_invoke(function_name):
     '''
     funcref = local_functions[function_name]
     selection = vve.visual.visual_select()
-    funcref(selection)
+
+    try:
+        funcref(selection)
+
+    except VveException as e:
+        vim.command('redraw')
+        print("[Error] - " + str(e))
+        return
