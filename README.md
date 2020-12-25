@@ -25,7 +25,7 @@ features include:
 
 ![](https://github.com/qtc-de/vve/workflows/master%20Python%20CI/badge.svg?branch=master)
 ![](https://github.com/qtc-de/vve/workflows/develop%20Python%20CI/badge.svg?branch=develop)
-![vve-example](./resources/vve.gif)
+![vve-example](https://tneitzel.eu/73201a92878c0aba7c3419b7403ab604/vve.gif)
 
 
 ### Installation 
