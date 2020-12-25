@@ -1,5 +1,17 @@
-# Pythons 'vim' module is normally only available when called from within vim. With this little
-# hack, the module import works. As we only want to test the encoding and decoding functions,
-# this should be sufficient
 import sys
-sys.modules['vim'] = "dummy"
+
+
+class VimDummy:
+    '''
+    The unit tests require a 'vim' module, which is normally only avaibale when running
+    from inside vim. In the following, we use this class as a dummy module and implement
+    the only required function 'command' as a dummy function.
+    '''
+
+    def command(self, cmd):
+        '''
+        Dummy function that does nothing.
+        '''
+
+
+sys.modules['vim'] = VimDummy()

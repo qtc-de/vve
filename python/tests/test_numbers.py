@@ -84,7 +84,7 @@ def test_to_hex_string(string, hexstring):
                                             ('0b1001100110111', 0b1001100110111),
                                             ('\\x13\\x37\\x13\\x37', 0x13371337),
                                             ])
-def test_to_bin(string, number):
+def test_to_number(string, number):
     '''
     Test vve.to_number function.
     '''

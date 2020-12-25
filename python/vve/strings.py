@@ -24,6 +24,8 @@ def _get_hex_format(hs):
     Returns
         return      (string)            plain | formatted | None
     '''
+    if re.match('^0x([a-fA-F0-9]{2})+$', hs):
+        return 'number'
     if re.match('^([a-fA-F0-9]{2})+$', hs):
         return 'plain'
     if re.match('^(\\\\x[a-fA-F0-9]{2})+$', hs):
@@ -55,12 +57,12 @@ def string_length_hex(string):
     Returns:
         None
     '''
-    if string.startswith("0x"):
-        string = string[2:]
-
     hex_format = _get_hex_format(string)
 
-    if hex_format == 'plain':
+    if hex_format == 'number':
+        length = len(string) // 2 - 1
+
+    elif hex_format == 'plain':
         length = len(string) // 2
 
     elif hex_format == 'formatted':
@@ -143,6 +145,8 @@ def swap_endian(hs):
         hs          (string)            hex string with swapped endianess
     '''
     hex_format = _get_hex_format(hs)
+    if hex_format == 'number':
+        return '0x' + swap_endian_plain(hs[2:])
     if hex_format == 'plain':
         return swap_endian_plain(hs)
     if hex_format == 'formatted':
