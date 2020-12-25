@@ -236,11 +236,14 @@ desired and vve supports two workarounds to allow it:
    <leader>eB will not work, as the decoding operation results in
    non UTF-8 characters.
 
-   To allow such operations, vve supports the :ChangeEncoding
+   To allow such operations, vve supports the |:ChangeEncoding|
    command. Just visual select the hex string aafefaeac3b1 and
-   type :ChangeEncoding hex base64 and the value should be encoded
-   as qv766sOx (you can also type <leader>ce to open the
-   ChangeEncoding menu).
+   type:
+>
+   :ChangeEncoding hex base64
+<
+   The selection should now be encoded as qv766sOx (you can also
+   type <leader>ce to open the |:ChangeEncoding| menu).
 
 
 ------------------------------------------------------------------
