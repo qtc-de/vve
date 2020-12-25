@@ -2,10 +2,20 @@ import re
 import vim
 
 import vve.visual
+from vve import VveException
+
+
+def _make_upper(match):
+    '''
+    Helper function that converts the first match group of a regex
+    search to uppercase.
+    '''
+    return match.group(1).upper()
+
 
 def _get_hex_format(hs):
     '''
-    Checks wether a supplied hex-string is a plain hexstring or a 
+    Checks wether a supplied hex-string is a plain hexstring or a
     string with ' \\x..' encoding.
 
     Parameters:
@@ -14,6 +24,8 @@ def _get_hex_format(hs):
     Returns
         return      (string)            plain | formatted | None
     '''
+    if re.match('^0x([a-fA-F0-9]{2})+$', hs):
+        return 'number'
     if re.match('^([a-fA-F0-9]{2})+$', hs):
         return 'plain'
     if re.match('^(\\\\x[a-fA-F0-9]{2})+$', hs):
@@ -35,10 +47,9 @@ def string_length(string):
     print(len(string))
 
 
-def string_length_hs(string):
+def string_length_hex(string):
     '''
-    A length function for hex-strings (\\x.. format). It simply
-    divides the length by 4 to give the effective number of bytes.
+    A length function for hex inputs (plain 0x.. and \\x.. format).
 
     Parameters:
         string          (string)        input string
@@ -46,8 +57,22 @@ def string_length_hs(string):
     Returns:
         None
     '''
+    hex_format = _get_hex_format(string)
+
+    if hex_format == 'number':
+        length = len(string) // 2 - 1
+
+    elif hex_format == 'plain':
+        length = len(string) // 2
+
+    elif hex_format == 'formatted':
+        length = len(string) // 4
+
+    else:
+        raise VveException(f"Input string '{string}' is not in hex format.")
+
     vim.command('redraw')
-    print(len(string) // 4)
+    print(length)
 
 
 def string_upper(string):
@@ -58,7 +83,7 @@ def string_upper(string):
         string          (string)        input string
 
     Returns:
-        None
+        string          (string)        input string in uppercase
     '''
     return string.upper()
 
@@ -71,14 +96,14 @@ def string_lower(string):
         string          (string)        input string
 
     Returns:
-        None
+        string          (string)        input string in lowercase
     '''
     return string.lower()
 
 
 def swap_endian_hs(hs):
     '''
-    Takes a hexstring (\\x..\\x..\\x.. ...) and simply returns it in 
+    Takes a hexstring (\\x..\\x..\\x.. ...) and simply returns it in
     reverse order (swapped endian).
 
     Parameters:
@@ -94,7 +119,7 @@ def swap_endian_hs(hs):
 
 def swap_endian_plain(hs):
     '''
-    Takes a hexstring (without 0x or \\x) and simply returns it in 
+    Takes a hexstring (without 0x or \\x) and simply returns it in
     reverse order (swapped endian).
 
     Parameters:
@@ -120,6 +145,8 @@ def swap_endian(hs):
         hs          (string)            hex string with swapped endianess
     '''
     hex_format = _get_hex_format(hs)
+    if hex_format == 'number':
+        return '0x' + swap_endian_plain(hs[2:])
     if hex_format == 'plain':
         return swap_endian_plain(hs)
     if hex_format == 'formatted':
@@ -185,8 +212,7 @@ def string_camel_case(string):
     Returns:
         output      (string)            output string in camel case
     '''
-    make_upper = lambda x: x.group(1).upper()
-    output = re.sub(r'_([^_])', make_upper, string)
+    output = re.sub(r'_([^_])', _make_upper, string)
     return output
 
 
@@ -226,4 +252,11 @@ def strings_invoke(function_name):
     '''
     funcref = local_functions[function_name]
     selection = vve.visual.visual_select()
-    funcref(selection)
+
+    try:
+        funcref(selection)
+
+    except VveException as e:
+        vim.command('redraw')
+        print("[Error] - " + str(e))
+        return

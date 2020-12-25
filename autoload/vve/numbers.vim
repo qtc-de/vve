@@ -3,19 +3,14 @@ from vve.numbers import numbers_apply
 EOF
 
 function! vve#numbers#Dispatch(function_name, type)
+    let l:type = vve#utils#GetVisualMode(a:type)
 
-    if a:type == 'char'
-        execute "normal! `[v`]\<esc>"
-        execute "python3 numbers_apply('" . a:function_name . "', 'v')"
-
-    elseif a:type == 'line'
-        execute "normal! `[V`]\<esc>"
-        execute "python3 numbers_apply('" . a:function_name . "', 'V')"
-
-    else
-        execute "python3 numbers_apply('" . a:function_name . "', '" . a:type . "')"
-
+    if l:type == "Nope"
+        echom "[-] Unknown motion / visual type: " . a:type
+        return
     endif
+
+    execute "python3 numbers_apply('" . a:function_name . "', '" . l:type . "')"
 endfunction
 
 function! vve#numbers#VisualToHex(type)
@@ -52,8 +47,4 @@ endfunction
 
 function! vve#numbers#VisualToHexString(type)
     call vve#numbers#Dispatch('to_hex_string', a:type)
-endfunction
-
-function! vve#numbers#VisualFromHexString(type)
-    call vve#numbers#Dispatch('from_hex_string', a:type)
 endfunction

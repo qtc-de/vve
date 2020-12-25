@@ -1,6 +1,6 @@
-*vve.txt* Adding encoding capabilities to Vim
+*vve.txt* *vve* Adding encoding capabilities to Vim
 
- .----------------.  .----------------.  .----------------. 
+ .----------------.  .----------------.  .----------------.
 | .--------------. || .--------------. || .--------------. |
 | | ____   ____  | || | ____   ____  | || |  _________   | |
 | ||_  _| |_  _| | || ||_  _| |_  _| | || | |_   ___  |  | |
@@ -10,10 +10,10 @@
 | |     \_/      | || |     \_/      | || | | _______ |  | |
 | |              | || |              | || |              | |
 | '--------------' || '--------------' || '--------------' |
- '----------------'  '----------------'  '----------------' 
-                               
+ '----------------'  '----------------'  '----------------'
 
-                                        Written by: Tobias Neitzel
+
+                              Written by: Tobias Neitzel (@qtc_de)
 ==================================================================
 CONTENTS                                               *vveContents*
 
@@ -21,9 +21,11 @@ CONTENTS                                               *vveContents*
   2.Functionality provided..................|vveFunctionality|
       2.1.Global commands...................|vveGlobalCommands|
       2.2.Global mappings...................|vveGlobalMappings|
+  3.Unprintable Characters..................|vveUnprintable|
+  4.Full Operations.........................|vveFullOperations|
 
 ==================================================================
-1. Intro                                                       *vve*
+1. Intro                                                  *vveIntro*
 
 What is vve?
 
@@ -35,7 +37,7 @@ What is vve?
 
 How can vve help me?
 
-  Encoding or decoding text is a quite common task during 
+  Encoding or decoding text is a quite common task during
   security assessments and there are many possibilities to get
   the job done. Encoding or decoding text directly in Vim is
   one of the fastest possibilities that fits perfectly in my own
@@ -57,8 +59,9 @@ Limitations
   Decoding text inside of an editor is of course limited to
   displayable characters. If you decode a portion of text that
   translates to non UTF-8 formatted data, vve will probably fail.
-  This is currently an expected behavior, but workarounds may
-  be implemented in future.
+  In these situations you can use the |:ChangeEncoding| command
+  or decoding to ASCII instead of UTF-8. More details can be found
+  in the |vveUnprintable| section.
 
 
 ==================================================================
@@ -87,6 +90,21 @@ Limitations
     Same as |:InsertPath|, but it appends the path after the
     cursor instead of inserting in front of it.
 
+:ChangeEncoding                                    *:ChangeEncoding*
+    Directly switch form one encoding into another one. This is
+    useful when the targeted text is not UTF-8 encoded. In these
+    situations, vve cannot decode the text inside vim and the
+    approach of decoding and re-encoding does not work. Instead,
+    you can directly switch the encoding using this command.
+
+    ChangeEncoding has to be called from |visualmode| and
+    operates on the last visual selection. The following example
+    decodes the selected text has hex and re-rencodes it as
+    base64.
+    >
+    :ChangeEncoding hex base64
+<
+
 ------------------------------------------------------------------
 2.2. Global Mappings                             *vveGlobalMappings*
 
@@ -94,15 +112,20 @@ vve sets up several keymappings for normal and visual mode.
 The key combinations for the different mappings are exactly the
 same, only the workflow is different. With the visual mode
 mappings you select the text to operate on and then invoke the
-corresponding mapping. Normal mode mappings, on the other hand, 
+corresponding mapping. Normal mode mappings, on the other hand,
 are invoked in normal mode and switch to operator pending mode
 after invocation. This means that they expect a movement
 instruction as a follow up action, to define the area of effect.
 All of the following key mappings are prefixed with your mapleader
-(<leader>). 
-
-Encoding Related Mappings~
+(<leader>).
+                                                 *vveVisualMappings*
+Visual Mode Only Mappings~
 Key       Description~
+ce....... Open ChangeEncoding Menu
+                                                   *vveUtf8Mappings*
+Encoding Related Mappings Operating on UTF-8~
+Key       Description~
+ea....... Encode as ASCII
 eb....... Encode as binary
 eB....... Encode as base64
 ee....... Encode HTML special characters (entities)
@@ -112,18 +135,44 @@ eH....... Encode as hex string
 eu....... Encode URL special characters
 eU....... Encode all characters as URL
 ex....... Encode XML special characters
-eX....... Currently the same as ex
+eX....... Encode all characters as XML
+
+da....... Decode ASCII
 db....... Decode binary
 dB....... Decode base64
 dh....... Decode hex
 dH....... Decode hex string
 du....... Decode URL
-dU....... Currently same as du
+dU....... Decode URL Full
 de....... Decode HTML
-dE....... Currently same as de
+dE....... Decode HTML Full
 dx....... Decode XML
-dX....... Currently same as dx
+dX....... Decode XML Full
+                                                  *vveAsciiMappings*
+Encoding Related Mappings Operating on ASCII~
+Key       Description~
+Eb....... Encode as binary
+EB....... Encode as base64
+Ee....... Encode all characters as HTML (entities)
+EE....... Encode all characters as HTML (entities)
+Eh....... Encode as hex
+EH....... Encode as hex string
+Eu....... Encode URL special characters
+EU....... Encode all characters as URL
+Ex....... Encode all characters as XML (entities)
+EX....... Encode all characters as XML (entities)
 
+Db....... Decode binary
+DB....... Decode base64
+Dh....... Decode hex
+DH....... Decode hex string
+Du....... Decode URL
+DU....... Decode URL Full
+De....... Decode HTML
+DE....... Decode HTML Full
+Dx....... Decode XML
+DX....... Decode XML Full
+                                                 *vveNumberMappings*
 Number Related Mappings~
 Key       Description~
 th....... To hex format
@@ -135,7 +184,7 @@ ma....... In place addition
 ms....... In place subtraction
 mm....... In place multiplication
 md....... In place division
-
+                                                 *vveStringMappings*
 String Related Mappings~
 Key       Description~
 se....... Swap endianess
@@ -147,3 +196,85 @@ fc....... Convert to camelCase (from snake_case)
 fs....... Convert to snake_case (from camelCase)
 fm....... Convert to markdown anchor
 fM....... Convert to markdown anchor reference
+
+
+------------------------------------------------------------------
+3. Unprintable Characters                           *vveUnprintable*
+
+Decoding arbitrary portions of text inside of an editor has its
+limitations. If the decoded result contains non UTF-8 conform
+character codes, the decoding operation might fail. In these
+cases, vve will show an error like:
+    >
+    [Error] - Decoded result cannot be encoded as UTF-8.
+<
+However, in certain situations working with non UTF-8 data is
+desired and vve supports two workarounds to allow it:
+
+                                                 *vveASCII* *vveascii*
+*  For (almost) each operation, vve supports an ascii variant.
+   In the context of vve ascii encoding basically means that
+   ascii characters are displayed as usual, while all other
+   characters are displayed as escape sequences.
+
+   As an example, consider you want to decode the following
+   base64 encoded value:
+   >
+   SGVsbG8g/yBXb3JsZA==
+<
+   Using the ordinary <leader>dB command will fail, as the result
+   contains non valid unicode characters. The ascii variant
+   (<leader>DB), on the other hand, will decode this to:
+   >
+   Hello \xff World.
+<
+                                                 *vveChangeEncoding*
+*  A common scenario for dealing with non printable characters is
+   when switching encoding. E.g. consider you want to switch from
+   the hex encoded string aafefaeac3b1 to its base64 variant.
+   Decoding the value with <leader>dh and encoding it with
+   <leader>eB will not work, as the decoding operation results in
+   non UTF-8 characters.
+
+   To allow such operations, vve supports the |:ChangeEncoding|
+   command. Just visual select the hex string aafefaeac3b1 and
+   type:
+>
+   :ChangeEncoding hex base64
+<
+   The selection should now be encoded as qv766sOx (you can also
+   type <leader>ce to open the |:ChangeEncoding| menu).
+
+
+------------------------------------------------------------------
+4. Full Operations                               *vveFullOperations*
+
+vve defines several operations that have the term Full as part of
+their name. The meaning of Full slightly differs depending whether
+the corresponding operation is an encoding or decoding operation.
+
+*  For encoding operations, Full does basically mean that all
+   characters are converted. Using URL encoding as example, the
+   string Hello World would normally be encoded as Hello+World, as
+   the space character is the only one that really needs to be
+   encoded. The Full operation, on the other hand, will encode all
+   characters no matter whether encoding is required.
+
+*  For decoding operations, Full operations are basically an
+   alternative implementation. Lets take URL encoding again as an
+   example. When using the ordinary URL decode operation
+   (<leader>du), vve will just use a library function for decoding.
+   This is fine for 90% of the cases, but sometimes it causes
+   unexpected results.
+
+   As an example: when using the library function to decode %ff to
+   ascii representation (<leader>Du), you will get \xef\xbf\xbd.
+   This is because the library function tries to apply UTF-8
+   encoding, but %ff is no valid UTF-8 format. The Full
+   (alternative) implementation (<leader>DU) will decode %ff to
+   \xff which is probably what you expect.
+
+In most situation, using the non-Full operations should be fine.
+However, when working with non-printable characters, the non-Full
+operations can behave unexpected and using Full operations might
+fix that.

@@ -1,6 +1,9 @@
 import re
 import vim
 
+from vve import VveException
+
+
 def visual_select():
     '''
     This function needs to be called from within Vim. It returns the contents of
@@ -53,13 +56,23 @@ def visual_apply(funcref, visual_mode):
         None
     '''
     selection = visual_select()
-    if visual_mode == 'v':
-        applied = funcref(selection)
-    elif re.match('V|\\', visual_mode):
-        lines = selection.split('\n')
-        lines = list(map(lambda x: funcref(x), lines))
-        applied = "\n".join(lines)
-    else:
-        print("[Error] - This function has to be called from visualmode", end="")
-        return 1
+
+    try:
+        if visual_mode == 'v':
+            applied = funcref(selection)
+
+        elif re.match('V|\\', visual_mode):
+            lines = selection.split('\n')
+            lines = list(map(lambda x: funcref(x), lines))
+            applied = "\n".join(lines)
+
+        else:
+            print("[Error] - This function has to be called from visualmode", end="")
+            return
+
+    except VveException as e:
+        vim.command('redraw')
+        print("[Error] - " + str(e))
+        return
+
     visual_paste(applied, visual_mode)
