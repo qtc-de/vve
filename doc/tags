@@ -18,4 +18,5 @@ vveNumberMappings	vve.txt	/*vveNumberMappings*
 vveStringMappings	vve.txt	/*vveStringMappings*
 vveUnprintable	vve.txt	/*vveUnprintable*
 vveUtf8Mappings	vve.txt	/*vveUtf8Mappings*
+vveVisualMappings	vve.txt	/*vveVisualMappings*
 vveascii	vve.txt	/*vveascii*

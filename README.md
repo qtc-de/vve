@@ -89,6 +89,8 @@ The following mappings are currently defined (notice that each key combination n
 | eE        |Encode all characters as HTML (entities)                     |
 | eh        |Encode as hex                                                |
 | eH        |Encode as hex string                                         |
+| ej        |Encode as JSON string                                        |
+| eJ        |Encode all characters as JSON                                |
 | eu        |Encode URL special characters                                |
 | eU        |Encode all characters as URL                                 |
 | ex        |Encode XML special characters                                |
@@ -98,6 +100,8 @@ The following mappings are currently defined (notice that each key combination n
 | dB        |Decode base64                                                |
 | dh        |Decode hex                                                   |
 | dH        |Decode hex string                                            |
+| dj        |Decode JSON string                                           |
+| dJ        |Decode JSON string                                           |
 | du        |Decode URL                                                   |
 | dU        |Decode URL Full                                              |
 | de        |Decode HTML                                                  |
@@ -156,6 +160,7 @@ The following mappings are currently defined (notice that each key combination n
 | sC        |Echo hex string length                                       |
 | su        |Convert to upper                                             |
 | sl        |Convert to lower                                             |
+| sn        |Echo number of selected lines                                |
 | fc        |Convert to camelCase (from snake_case)                       |
 | fs        |Convert to snake_case (from camelCase)                       |
 | fm        |Convert to markdown anchor                                   |

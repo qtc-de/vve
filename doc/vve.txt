@@ -132,6 +132,8 @@ ee....... Encode HTML special characters (entities)
 eE....... Encode all characters as HTML (entities)
 eh....... Encode as hex
 eH....... Encode as hex string
+ej....... Encode as JSON
+eJ....... Encode all characters as JSON
 eu....... Encode URL special characters
 eU....... Encode all characters as URL
 ex....... Encode XML special characters
@@ -142,6 +144,8 @@ db....... Decode binary
 dB....... Decode base64
 dh....... Decode hex
 dH....... Decode hex string
+dj....... Decode JSON
+dJ....... Decode JSON
 du....... Decode URL
 dU....... Decode URL Full
 de....... Decode HTML
@@ -192,6 +196,7 @@ sc....... Echo string length
 sC....... Echo hex string length
 su....... Convert to upper
 sl....... Convert to lower
+sn....... Echo number of selected lines
 fc....... Convert to camelCase (from snake_case)
 fs....... Convert to snake_case (from camelCase)
 fm....... Convert to markdown anchor
