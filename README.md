@@ -2,6 +2,12 @@
 
 ----
 
+![](https://github.com/qtc-de/vve/workflows/master%20Python%20CI/badge.svg?branch=master)
+![](https://github.com/qtc-de/vve/workflows/develop%20Python%20CI/badge.svg?branch=develop)
+[![](https://img.shields.io/badge/version-1.1.0-blue)](https://github.com/qtc-de/vve/releases)
+![](https://img.shields.io/badge/python-9%2b-blue)
+[![](https://img.shields.io/badge/license-GPL%20v3.0-blue)](https://github.com/qtc-de/vve/blob/master/LICENSE)
+
 *Various Vim Encoders* is a small Vim plugin which adds encoding capabilities to the Vim editor.
 It configures key mappings for the most commonly used encoding schemes and enables you to transform
 text without leaving your editor. Some of its features include:
@@ -13,6 +19,10 @@ text without leaving your editor. Some of its features include:
 * Binary encoding/decoding
 * [...]
 
+
+![vve-example](https://tneitzel.eu/73201a92878c0aba7c3419b7403ab604/vve.gif)
+
+
 The current version of *vve* does also support some features which are not really encoding related.
 These features have proven to be useful, but may be removed in future versions. Some of these
 features include:
@@ -22,10 +32,6 @@ features include:
 * Endian Swapper
 * Length Calculation
 * [...]
-
-![](https://github.com/qtc-de/vve/workflows/master%20Python%20CI/badge.svg?branch=master)
-![](https://github.com/qtc-de/vve/workflows/develop%20Python%20CI/badge.svg?branch=develop)
-![vve-example](https://tneitzel.eu/73201a92878c0aba7c3419b7403ab604/vve.gif)
 
 
 ### Installation 
