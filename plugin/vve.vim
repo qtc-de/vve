@@ -24,6 +24,8 @@ nnoremap <leader>ee :set operatorfunc=vve#encode#VisualEncodeHtml<CR>g@
 nnoremap <leader>eE :set operatorfunc=vve#encode#VisualEncodeHtmlFull<CR>g@
 nnoremap <leader>eh :set operatorfunc=vve#encode#VisualEncodeHex<CR>g@
 nnoremap <leader>eH :set operatorfunc=vve#encode#VisualEncodeHexString<CR>g@
+nnoremap <leader>ej :set operatorfunc=vve#encode#VisualEncodeJSON<CR>g@
+nnoremap <leader>eJ :set operatorfunc=vve#encode#VisualEncodeJSONFull<CR>g@
 nnoremap <leader>eu :set operatorfunc=vve#encode#VisualEncodeURL<CR>g@
 nnoremap <leader>eU :set operatorfunc=vve#encode#VisualEncodeURLFull<CR>g@
 nnoremap <leader>ex :set operatorfunc=vve#encode#VisualEncodeXml<CR>g@
@@ -38,6 +40,8 @@ nnoremap <leader>du :set operatorfunc=vve#encode#VisualDecodeURL<CR>g@
 nnoremap <leader>dU :set operatorfunc=vve#encode#VisualDecodeURLFull<CR>g@
 nnoremap <leader>de :set operatorfunc=vve#encode#VisualDecodeHtml<CR>g@
 nnoremap <leader>dE :set operatorfunc=vve#encode#VisualDecodeHtmlFull<CR>g@
+nnoremap <leader>dj :set operatorfunc=vve#encode#VisualDecodeJSON<CR>g@
+nnoremap <leader>dJ :set operatorfunc=vve#encode#VisualDecodeJSON<CR>g@
 nnoremap <leader>dx :set operatorfunc=vve#encode#VisualDecodeXml<CR>g@
 nnoremap <leader>dX :set operatorfunc=vve#encode#VisualDecodeHtmlFull<CR>g@
 
@@ -71,6 +75,8 @@ vnoremap <leader>ee :<c-u>call vve#encode#VisualEncodeHtml(visualmode())<CR>
 vnoremap <leader>eE :<c-u>call vve#encode#VisualEncodeHtmlFull(visualmode())<CR>
 vnoremap <leader>eh :<c-u>call vve#encode#VisualEncodeHex(visualmode())<CR>
 vnoremap <leader>eH :<c-u>call vve#encode#VisualEncodeHexString(visualmode())<CR>
+vnoremap <leader>ej :<c-u>call vve#encode#VisualEncodeJSON(visualmode())<CR>
+vnoremap <leader>eJ :<c-u>call vve#encode#VisualEncodeJSONFull(visualmode())<CR>
 vnoremap <leader>eu :<c-u>call vve#encode#VisualEncodeURL(visualmode())<CR>
 vnoremap <leader>eU :<c-u>call vve#encode#VisualEncodeURLFull(visualmode())<CR>
 vnoremap <leader>ex :<c-u>call vve#encode#VisualEncodeXml(visualmode())<CR>
@@ -85,6 +91,8 @@ vnoremap <leader>du :<c-u>call vve#encode#VisualDecodeURL(visualmode())<CR>
 vnoremap <leader>dU :<c-u>call vve#encode#VisualDecodeURLFull(visualmode())<CR>
 vnoremap <leader>de :<c-u>call vve#encode#VisualDecodeHtml(visualmode())<CR>
 vnoremap <leader>dE :<c-u>call vve#encode#VisualDecodeHtmlFull(visualmode())<CR>
+vnoremap <leader>dj :<c-u>call vve#encode#VisualDecodeJSON(visualmode())<CR>
+vnoremap <leader>dJ :<c-u>call vve#encode#VisualDecodeJSON(visualmode())<CR>
 vnoremap <leader>dx :<c-u>call vve#encode#VisualDecodeXml(visualmode())<CR>
 vnoremap <leader>dX :<c-u>call vve#encode#VisualDecodeHtmlFull(visualmode())<CR>
 
@@ -136,6 +144,7 @@ vnoremap <leader>md :<c-u>call vve#numbers#VisualInPlaceDiv(visualmode())<CR>
 nnoremap <leader>se :set operatorfunc=vve#strings#VisualSwapEndian<CR>g@
 nnoremap <leader>sc :set operatorfunc=vve#strings#VisualLength<CR>g@
 nnoremap <leader>sC :set operatorfunc=vve#strings#VisualLengthHexString<CR>g@
+nnoremap <leader>sn :set operatorfunc=vve#strings#VisualLineLength<CR>g@
 nnoremap <leader>su :set operatorfunc=vve#strings#VisualUpper<CR>g@
 nnoremap <leader>sl :set operatorfunc=vve#strings#VisualLower<CR>g@
 nnoremap <leader>fc :set operatorfunc=vve#strings#VisualCamelCase<CR>g@
@@ -148,6 +157,7 @@ vnoremap <leader>sc :<c-u>call vve#strings#VisualLength(visualmode())<CR>
 vnoremap <leader>sC :<c-u>call vve#strings#VisualLengthHexString(visualmode())<CR>
 vnoremap <leader>su :<c-u>call vve#strings#VisualUpper(visualmode())<CR>
 vnoremap <leader>sl :<c-u>call vve#strings#VisualLower(visualmode())<CR>
+vnoremap <leader>sn :<c-u>call vve#strings#VisualLineLength(visualmode())<CR>
 vnoremap <leader>fc :<c-u>call vve#strings#VisualCamelCase(visualmode())<CR>
 vnoremap <leader>fs :<c-u>call vve#strings#VisualSnakeCase(visualmode())<CR>
 vnoremap <leader>fm :<c-u>call vve#strings#VisualMarkdownAnchor(visualmode())<CR>

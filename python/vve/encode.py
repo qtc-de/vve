@@ -1,5 +1,6 @@
 import re
 import html
+import json
 import base64
 import binascii
 import urllib.parse
@@ -460,6 +461,66 @@ def decode_html_full(string, raw=False):
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
     return decoded
+
+
+def encode_json(string):
+    '''
+    Encodes JSON special characters by using the json module.
+
+    Parameters:
+        string              (string)            Input string
+
+    Returns:
+        string              (string)            JSON encoded output
+    '''
+    if isinstance(string, bytes):
+        raise VveException("JSON encoding is only supported for UTF-8 data.")
+
+    return json.dumps(string)[1:-1]
+
+
+def encode_json_full(string):
+    '''
+    Replaces each character with the \\u.... JSON representation.
+
+    Parameters:
+        string              (string)            Input string
+
+    Returns:
+        string              (string)            JSON encoded output
+    '''
+    if isinstance(string, bytes):
+        raise VveException("JSON encoding is only supported for UTF-8 data.")
+
+    result = ''
+
+    for char in string:
+
+        byte = char.encode('utf-8')
+
+        if len(byte) == 1 and ord(byte) < 0x7f:
+            result += r'\u00' + byte.hex()
+
+        else:
+            result += json.dumps(char)[1:-1]
+
+    return result
+
+
+def decode_json(string):
+    '''
+    Decodes a JSON encoded string.
+
+    Parameters:
+        string              (string)            Input string
+
+    Returns:
+        string              (string)            JSON decoded output
+    '''
+    if isinstance(string, bytes):
+        raise VveException("JSON decoding is only supported for UTF-8 data.")
+
+    return json.loads(f'"{string}"')
 
 
 def encode_xml(string):

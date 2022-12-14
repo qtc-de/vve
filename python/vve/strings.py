@@ -47,6 +47,25 @@ def string_length(string):
     print(len(string))
 
 
+def line_count(string):
+    '''
+    Takes a multiline string and echos the number of lines.
+
+    Parameters:
+        string          (string)        input string
+
+    Returns:
+        None
+    '''
+    vim.command('redraw')
+    split = string.split('\n')
+
+    if split[-1] == '':
+        split = split[0:-1]
+
+    print(len(split))
+
+
 def string_length_hex(string):
     '''
     A length function for hex inputs (plain 0x.. and \\x.. format).

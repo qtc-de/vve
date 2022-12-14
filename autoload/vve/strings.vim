@@ -36,6 +36,10 @@ function! vve#strings#VisualLengthHexString(type)
     call vve#strings#DispatchInvoke('string_length_hex', a:type)
 endfunction
 
+function! vve#strings#VisualLineLength(type)
+    call vve#strings#DispatchInvoke('line_count', a:type)
+endfunction
+
 function! vve#strings#VisualUpper(type)
     call vve#strings#Dispatch('string_upper', a:type)
 endfunction

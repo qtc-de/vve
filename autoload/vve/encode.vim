@@ -10,6 +10,8 @@ let s:encode_dict = {
     \ "hex" : "encode_hex",
     \ "hexstring" : "encode_hex_string",
     \ "htmlfull" : "encode_html_full",
+    \ "json" : "encode_json",
+    \ "jsonfull" : "encode_json_full",
     \ "url" : "encode_url",
     \ "urlfull" : "encode_url_full",
     \ "xmlfull" : "encode_xml_full",
@@ -23,6 +25,7 @@ let s:decode_dict = {
     \ "hex" : "decode_hex",
     \ "hexstring" : "decode_hex_string",
     \ "htmlfull" : "decode_html_full",
+    \ "json" : "decode_json",
     \ "url" : "decode_url",
     \ "urlfull" : "decode_url_full",
     \ "xmlfull" : "decode_xml_full",
@@ -36,6 +39,8 @@ function! vve#encode#ListEncodings(A, L, P)
     let l:options .= "hex \n"
     let l:options .= "hexstring \n"
     let l:options .= "htmlfull \n"
+    let l:options .= "json \n"
+    let l:options .= "jsonfull \n"
     let l:options .= "url \n"
     let l:options .= "urlfull \n"
     let l:options .= "xmlfull "
@@ -129,6 +134,16 @@ function! vve#encode#VisualDecodeHex(type)
 endfunction
 
 
+function! vve#encode#VisualEncodeJSON(type)
+    call vve#encode#Dispatch('encode_json', a:type)
+endfunction
+
+
+function! vve#encode#VisualEncodeJSONFull(type)
+    call vve#encode#Dispatch('encode_json_full', a:type)
+endfunction
+
+
 function! vve#encode#VisualEncodeURL(type)
     call vve#encode#Dispatch('encode_url', a:type)
 endfunction
@@ -186,6 +201,11 @@ endfunction
 
 function! vve#encode#VisualDecodeHtmlFull(type)
     call vve#encode#Dispatch('decode_html_full', a:type)
+endfunction
+
+
+function! vve#encode#VisualDecodeJSON(type)
+    call vve#encode#Dispatch('decode_json', a:type)
 endfunction
 
 
