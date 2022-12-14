@@ -45,8 +45,8 @@ If you use Vim's native package manager, just clone the repository in either the
 folder of your Vim configuration folder. E.g.:
 
 ```console
-$ cd ~/.vim/pack/plugins/start/
-$ git clone https://github.com/qtc-de/vve
+[user@host ~]$ cd ~/.vim/pack/plugins/start/
+[user@host ~/.vim/pack/plugins/start/]$ git clone https://github.com/qtc-de/vve
 ```
 
 If you have chosen the ``start`` folder, *vve* will be available on each startup of Vim. If you decided
@@ -74,7 +74,7 @@ If *UTF-8* representation is not possible (e.g. when decoding stuff like ``//8=`
 are displayed as normal, while all others are displayed as escape sequences (e.g. ``\xff``). Check the
 [Unprintable Characters](#unprintable-characters) section for more details.
 
-The following mappings are currently defined (notice that each key combination needs to be prefixed by your \<leader\> key):
+The following mappings are currently defined (notice that each key combination needs to be prefixed by your `\<leader\>` key):
 
 
 **Visual Mode Only Mappings**
@@ -253,4 +253,4 @@ implement different encodings and taking these design decisions is just a mess. 
 are certainly some edge cases that are not covered yet.
 
 
-*Copyright 2020, Tobias Neitzel and the vve contributors.*
+*Copyright 2022, Tobias Neitzel and the vve contributors.*
