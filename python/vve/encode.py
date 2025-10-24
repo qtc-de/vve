@@ -151,10 +151,10 @@ def decode_base64(string: str, raw: bool = False) -> str | bytes:
             continue
 
         except Exception:
-            raise VveException("Decoded result cannot be encoded as UTF-8.")
+            raise VveException('Decoded result cannot be encoded as UTF-8.')
 
     if count >= 3:
-        raise VveException("Input is no valid base64.")
+        raise VveException('Input is no valid base64.')
 
     return decoded
 
@@ -179,7 +179,7 @@ def encode_binary(data: str | bytes) -> str:
 
     for byte in data:
 
-        binary = "{:08b}".format(byte)
+        binary = '{:08b}'.format(byte)
         return_value += binary
 
     return return_value
@@ -607,7 +607,7 @@ def encode_ascii(data: str | bytes) -> str:
             result += chr(byte)
 
         else:
-            b_hex = "\\x{:02x}".format(byte)
+            b_hex = '\\x{:02x}'.format(byte)
             b_hex = b_hex.replace('0x', '\\x')
             result += b_hex
 
@@ -639,7 +639,7 @@ def decode_ascii(string: str, raw: bool = False) -> str | bytes:
         decoded = decoded.decode('utf-8')
 
     except Exception:
-        raise VveException("Decoded result cannot be encoded as UTF-8.")
+        raise VveException('Decoded result cannot be encoded as UTF-8.')
 
     return decoded
 
