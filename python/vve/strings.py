@@ -221,7 +221,7 @@ def string_markdown_anchor_reference(headline: str) -> str:
     reference = f'[{headline}]('
     headline = string_markdown_anchor(headline)
 
-    return headline + ')'
+    return reference + headline + ')'
 
 
 def string_snake_case(string: str) -> str:
