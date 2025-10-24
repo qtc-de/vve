@@ -50,20 +50,21 @@ def _replace_hex(match):
     return chr(int(match.group().replace('\\x', ''), 16))
 
 
-def get_entity(string, prefix=False):
+def get_entity(string: str, prefix: bool = False) -> str:
     '''
     Checks if the specified string is part of the html5 entity set.
     If this is the case, the corresponding character is returned. If
     not, the input string is returned.
 
     Paramaters:
-        string              (string)            Entity
-        prefix              (boolean)           If True, add '&' prefix
+        string              Entity
+        prefix              If True, add '&' prefix
 
     Returns:
-        result              (string)            Corresponding char
+        result              Corresponding char
     '''
     if string not in html.entities.html5:
+
         if prefix:
             return_value = '&' + string
 
@@ -72,38 +73,40 @@ def get_entity(string, prefix=False):
     return html.entities.html5[string]
 
 
-def encode_mixed(string):
+def encode_mixed(string: str) -> bytes:
     '''
     Takes a string as input and converts it to a bytes object.
     Each codepoint is attempted to be converted as an ascii character
     first. If this is not possible, utf-8 convertion is used.
 
     Paramaters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        encoded             (bytes)             decoded nyte array
+        encoded             decoded nyte array
     '''
     decoded = b''
     for char in string:
+
         try:
             decoded += bytes([ord(char)])
+
         except ValueError:
             decoded += char.encode('utf-8')
 
     return decoded
 
 
-def encode_base64(data):
+def encode_base64(data: str | bytes) -> str:
     '''
     Applies base64 encoding to the input data. Input can be supplied
     as string or bytes value.
 
     Parameters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        encoded             (string)            Base64 encoded output
+        encoded             Base64 encoded output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
@@ -112,25 +115,27 @@ def encode_base64(data):
     return encoded.decode('utf-8')
 
 
-def decode_base64(string, raw=False):
+def decode_base64(string: str, raw: bool = False) -> str | bytes:
     '''
     Takes a base64 input string and returns the decoded data. Padding
     errors are corrected automatically (theoretically). Output can be
     obtained as string or bytes depending on the value of raw.
 
     Parameters:
-        string              (string)            Input string
-        raw                 (boolean)           Return as bytes
+        string              Input string
+        raw                 Return as bytes
 
     Returns:
-        decoded             (string/bytes)      Base64 decoded data
+        decoded             Base64 decoded data
     '''
     byte_form = string.encode('utf-8')
     count = 0
 
     while count < 3:
+
         try:
             decoded = base64.b64decode(byte_form, validate=True)
+
             if raw:
                 return decoded
 
@@ -138,8 +143,10 @@ def decode_base64(string, raw=False):
             break
 
         except binascii.Error:
+
             byte_form += b'='
             decoded = string
+
             count += 1
             continue
 
@@ -152,7 +159,7 @@ def decode_base64(string, raw=False):
     return decoded
 
 
-def encode_binary(data):
+def encode_binary(data: str | bytes) -> str:
     '''
     Applies binary encoding to the input data. Input can be supplied
     as string or bytes. If it is string, each character is
@@ -160,39 +167,42 @@ def encode_binary(data):
     into a eight digit binary sequence.
 
     Parameters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        return_value        (string)            Binary formatted output
+        return_value        Binary formatted output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
 
     return_value = ''
+
     for byte in data:
+
         binary = "{:08b}".format(byte)
         return_value += binary
 
     return return_value
 
 
-def decode_binary(string, raw=False):
+def decode_binary(string: str, raw: bool = False) -> str | bytes:
     '''
     Takes a binary formatted string (containing only zeros and ones)
     and tries to decode it as an utf-8 formatted string. Output can
     also be obtained as raw bytes if raw=True.
 
     Parameters:
-        string              (string)            Input binary string
-        raw                 (boolean)           Return as bytes
+        string              Input binary string
+        raw                 Return as bytes
 
     Returns:
-        string              (string/bytes)      decoded output
+        string              decoded output
     '''
     if re.search('[^01]', string):
-        raise VveException("Input string is not binary.")
+        raise VveException('Input string is not binary.')
 
     b_array = bytearray()
+
     for i in range(0, len(string), 8):
         integer = int(string[i:i+8], 2)
         b_array.append(integer)
@@ -202,20 +212,21 @@ def decode_binary(string, raw=False):
 
     try:
         return b_array.decode('utf-8')
+
     except Exception:
-        raise VveException("Decoded result cannot be encoded as UTF-8.")
+        raise VveException('Decoded result cannot be encoded as UTF-8.')
 
 
-def encode_hex_string(data):
+def encode_hex_string(data: str | bytes) -> str:
     '''
     Accepts a string or bytes input and converts it into a hex-string
     (\\x..\\x..\\x..).
 
     Parameters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        return_value        (string)            Formatted hex output
+        return_value        Formatted hex output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
@@ -229,45 +240,47 @@ def encode_hex_string(data):
     return return_value
 
 
-def decode_hex_string(string, raw=False):
+def decode_hex_string(string: str, raw: bool = False) -> str | bytes:
     '''
     Takes a hex string (\\x..\\x..\\x..) as input and converts it back into
     either an utf-8 formatted string or a raw bytes value.
 
     Parameters:
-        string              (string)            Input hex string
-        raw                 (boolean)           Return as bytes
+        string              Input hex string
+        raw                 Return as bytes
 
     Returns:
-        string              (string/bytes)      Decoded output
+        string              Decoded output
     '''
     plain = string.replace('\\x', '')
 
     try:
         b_array = bytearray.fromhex(plain)
+
     except Exception:
-        raise VveException("Input is no valid hex string.")
+        raise VveException('Input is no valid hex string.')
 
     if raw:
         return bytes(b_array)
 
     try:
         return b_array.decode('utf-8')
+
     except Exception:
-        raise VveException("Decoded result cannot be encoded as UTF-8.")
+        raise VveException('Decoded result cannot be encoded as UTF-8.')
 
 
-def encode_hex(data):
+def encode_hex(data: str | bytes) -> str:
     '''
     Takes either a string or a raw bytes value as input and converts it to hex.
     If input is string, it is utf-8 decoded first and then each byte will be
     converted into a hex number. The single hex numbers will then be concatenated.
 
     Parameters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        string              (string)            Hex formatted output
+        string              Hex formatted output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
@@ -275,20 +288,21 @@ def encode_hex(data):
     return data.hex()
 
 
-def decode_hex(string, raw=False):
+def decode_hex(string: str, raw: bool = False) -> str | bytes:
     '''
     Takes a stream of hex numbers (e.g. A01FE92...) and converts it, either
     into an utf-8 formatted string or a raw bytes value.
 
     Parameters:
-        string              (string)            Input hex stream
-        raw                 (boolean)           Return as bytes
+        string              Input hex stream
+        raw                 Return as bytes
 
     Returns:
-        string              (string/bytes)      UTF-8 formatted output
+        string              UTF-8 formatted output
     '''
     try:
         b_array = bytearray.fromhex(string)
+
     except Exception:
         raise VveException('Input is not in hex format.')
 
@@ -297,35 +311,36 @@ def decode_hex(string, raw=False):
 
     try:
         return b_array.decode('utf-8')
+
     except Exception:
-        raise VveException("Decoded result cannot be encoded as UTF-8.")
+        raise VveException('Decoded result cannot be encoded as UTF-8.')
 
 
-def encode_url(data):
+def encode_url(data: str | bytes) -> str:
     '''
     Applies URL encoding to the input data for URL special characters.
     Input data can be specified as string or raw bytes.
 
     Parameters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        string              (string)            URL encoded output
+        string              URL encoded output
     '''
     return urllib.parse.quote_plus(data)
 
 
-def encode_url_full(data):
+def encode_url_full(data: str | bytes) -> str:
     '''
     Takes a string or raw bytes as input and applies URL encoding to
     each character. If input is string, it is treated as utf-8 and
     multibyte characters are encoded as seperate URL encoded characters.
 
     Parameters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        string              (string)            URL encoded output
+        string              URL encoded output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
@@ -339,38 +354,39 @@ def encode_url_full(data):
     return return_value
 
 
-def decode_url(string, raw=False):
+def decode_url(string: str, raw: bool = False) -> str:
     '''
     Applies URL decoding to the input string.
 
     Parameters:
-        string              (string)            Input string
-        raw                 (boolean)           Return as bytes
+        string              Input string
+        raw                 Return as bytes
 
     Returns:
-        string              (string)            URL decoded output
+        string              URL decoded output
     '''
     decoded = urllib.parse.unquote_plus(string)
+
     if not raw:
         return decoded
 
     return decoded.encode('utf-8')
 
 
-def decode_url_full(string, raw=False):
+def decode_url_full(string: str, raw: bool = False) -> str | bytes:
     '''
     Applies URL decoding to the input string. Output can be obtained as
     utf-8 string or raw byes.
 
     Parameters:
-        string              (string)            Input string
-        raw                 (boolean)           Return as bytes
+        string              Input string
+        raw                 Return as bytes
 
     Returns:
-        string              (string/bytes)      URL decoded output
+        string              URL decoded output
     '''
     string = re.sub(r'%[0-9a-fA-F]{2}', _replace_url, string)
-    string = string.replace("+", " ")
+    string = string.replace('+', ' ')
 
     decoded = encode_mixed(string)
     if raw:
@@ -378,37 +394,38 @@ def decode_url_full(string, raw=False):
 
     try:
         return decoded.decode('utf-8')
+
     except Exception:
-        raise VveException("Decoded result cannot be encoded as UTF-8.")
+        raise VveException('Decoded result cannot be encoded as UTF-8.')
 
 
-def encode_html(string):
+def encode_html(string: str) -> str:
     '''
     Applies HTML encoding to special characrers inside the input string.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            HTML encoded output
+        string              HTML encoded output
     '''
     if isinstance(string, bytes):
-        raise VveException("HTML encoding is only supported for UTF-8 data.")
+        raise VveException('HTML encoding is only supported for UTF-8 data.')
 
     return html.escape(string)
 
 
-def encode_html_full(data):
+def encode_html_full(data: str | bytes) -> str:
     '''
     Applies HTML encoding to the complete input data. The input data
     can be specified as string or bytes. If specified as bytes, it is
     treated as utf-8 and each byte gets encoded seperately.
 
     Parameters:
-        string              (string/bytes)      Input string
+        string              Input string
 
     Returns:
-        string              (string)            HTML encoded output
+        string              HTML encoded output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
@@ -422,29 +439,29 @@ def encode_html_full(data):
     return return_value
 
 
-def decode_html(string):
+def decode_html(string: str) -> str:
     '''
     Applies HTML decoding to the input string.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            HTML decoded output
+        string              HTML decoded output
     '''
     return html.unescape(string)
 
 
-def decode_html_full(string, raw=False):
+def decode_html_full(string: str, raw: bool = False) -> str | bytes:
     '''
     Applies HTML decoding to the input string.
 
     Parameters:
-        string              (string)            Input string
-        raw                 (boolean)           Return as bytes
+        string              Input string
+        raw                 Return as bytes
 
     Returns:
-        string              (string/bytes)      HTML decoded output
+        string              HTML decoded output
     '''
     string = re.sub(r'&#x[0-9a-fA-F]{2};', _replace_html_hex, string)
     string = re.sub(r'&#[0-9]{1,6};', _replace_html_dec, string)
@@ -457,40 +474,41 @@ def decode_html_full(string, raw=False):
 
     try:
         decoded = decoded.decode('utf-8')
+
     except Exception:
-        raise VveException("Decoded result cannot be encoded as UTF-8.")
+        raise VveException('Decoded result cannot be encoded as UTF-8.')
 
     return decoded
 
 
-def encode_json(string):
+def encode_json(string: str) -> str:
     '''
     Encodes JSON special characters by using the json module.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            JSON encoded output
+        string              JSON encoded output
     '''
     if isinstance(string, bytes):
-        raise VveException("JSON encoding is only supported for UTF-8 data.")
+        raise VveException('JSON encoding is only supported for UTF-8 data.')
 
     return json.dumps(string)[1:-1]
 
 
-def encode_json_full(string):
+def encode_json_full(string: str) -> str:
     '''
     Replaces each character with the \\u.... JSON representation.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            JSON encoded output
+        string              JSON encoded output
     '''
     if isinstance(string, bytes):
-        raise VveException("JSON encoding is only supported for UTF-8 data.")
+        raise VveException('JSON encoding is only supported for UTF-8 data.')
 
     result = ''
 
@@ -507,81 +525,82 @@ def encode_json_full(string):
     return result
 
 
-def decode_json(string):
+def decode_json(string: str) -> str:
     '''
     Decodes a JSON encoded string.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            JSON decoded output
+        string              JSON decoded output
     '''
     if isinstance(string, bytes):
-        raise VveException("JSON decoding is only supported for UTF-8 data.")
+        raise VveException('JSON decoding is only supported for UTF-8 data.')
 
     return json.loads(f'"{string}"')
 
 
-def encode_xml(string):
+def encode_xml(string: str) -> str:
     '''
     Applies XML encoding to the input string for XML special characters.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            XML encoded output
+        string              XML encoded output
     '''
     if isinstance(string, bytes):
-        raise VveException("XML encoding is only supported for UTF-8 data.")
+        raise VveException('XML encoding is only supported for UTF-8 data.')
 
     return xml.sax.saxutils.escape(string)
 
 
-def encode_xml_full(string):
+def encode_xml_full(string: str) -> str:
     '''
     Currently just the same as encode_html_full.
     '''
     return encode_html_full(string)
 
 
-def decode_xml(string):
+def decode_xml(string: str) -> str:
     '''
     Applies XML decoding to the input string.
 
     Parameters:
-        string              (string)            Input string
+        string              Input string
 
     Returns:
-        string              (string)            XML decoded output
+        string              XML decoded output
     '''
     return xml.sax.saxutils.unescape(string)
 
 
-def decode_xml_full(string, raw=False):
+def decode_xml_full(string: str, raw: bool = False) -> str | bytes:
     '''
     Currently just the same as decode_html_full
     '''
     return decode_html_full(string, raw)
 
 
-def encode_ascii(data):
+def encode_ascii(data: str | bytes) -> str:
     '''
     Takes a string or bytes object and converts each ASCII byte into its character
     representation.  Bytes that are out of the ASCII range are displayed as escape
     sequence \\xXX.
 
     Paramaters:
-        data                (string/bytes)      Input data
+        data                Input data
 
     Returns:
-        ascii_value         (string)            ASCII output
+        ascii_value         ASCII output
     '''
     if not isinstance(data, bytes):
         data = data.encode('utf-8')
 
     result = ''
+
     for byte in data:
 
         if byte > 0x1f and byte < 0x7f:
@@ -595,7 +614,7 @@ def encode_ascii(data):
     return result
 
 
-def decode_ascii(string, raw=False):
+def decode_ascii(string: str, raw: bool = False) -> str | bytes:
     '''
     Opposite operation to encode_ascii. Searches for \\xXX sequences inside the input
     string and converts them to their raw byte value. Afterwards, the whole string
@@ -603,11 +622,11 @@ def decode_ascii(string, raw=False):
     bytearray will be decoded as utf-8.
 
     Paramaters:
-        string              (string)            Input string
-        raw                 (boolean)           True -> type(output)=bytes
+        string              Input string
+        raw                 True -> type(output)=bytes
 
     Returns:
-        decoded             (string/bytes)      Decoded output
+        decoded             Decoded output
     '''
     string = re.sub(r'\\x[0-9a-fA-F]{2}', _replace_hex, string)
 
@@ -618,6 +637,7 @@ def decode_ascii(string, raw=False):
 
     try:
         decoded = decoded.decode('utf-8')
+
     except Exception:
         raise VveException("Decoded result cannot be encoded as UTF-8.")
 
@@ -627,7 +647,7 @@ def decode_ascii(string, raw=False):
 local_functions = locals()
 
 
-def chain(funcref_1, funcref_2):
+def chain(funcref_1: Callable, funcref_2: Callable) -> Callable:
     '''
     Helper function that chains two function calls together. This is required for
     implementing the change_encoding function, because of design decisions that were
@@ -638,11 +658,11 @@ def chain(funcref_1, funcref_2):
     on non UTF-8 formatted data.
 
     Paramaters:
-        funcref_1           (funcref)           Reference to a decoding function
-        funcref_2           (funcref)           Reference to an encoding function
+        funcref_1           Reference to a decoding function
+        funcref_2           Reference to an encoding function
 
     Returns:
-        chained             (funcref)           Reference to the chained function
+        chained             Reference to the chained function
     '''
     def chained(data):
         decoded = funcref_1(data, raw=True)
@@ -652,16 +672,16 @@ def chain(funcref_1, funcref_2):
     return chained
 
 
-def change_encoding(decode_function, encode_function, visualmode):
+def change_encoding(decode_function: str, encode_function: str, visualmode: str) -> None:
     '''
     Applies the combination of {decode_function} (decoding function that accepts the
     {raw} paramater) and {encode_function} to the last visual selection. The last
     visual selection is then replaced by the corresponding result.
 
     Parameters:
-        decode_function     (string)            Name of the decoding function
-        encode_function     (string)            Name of the encoding function
-        visualmode          (string)            Mode of last visual selection (v|V|^V).
+        decode_function     Name of the decoding function
+        encode_function     Name of the encoding function
+        visualmode          Mode of last visual selection (v|V|^V).
 
     Returns:
         None
@@ -672,15 +692,15 @@ def change_encoding(decode_function, encode_function, visualmode):
     vve.visual.visual_apply(funcref_chained, visualmode)
 
 
-def encode_apply(function_name, visualmode):
+def encode_apply(function_name: str, visualmode: str) -> None:
     '''
     Just a helper function that applies {function_name} to the last
     visual selection. The last visual selection is then replaced by
     the corresponding result.
 
     Parameters:
-        function_name       (string)            Name of the function to apply
-        visualmode          (string)            Mode of last visual selection (v|V|^V).
+        function_name       Name of the function to apply
+        visualmode          Mode of last visual selection (v|V|^V).
 
     Returns:
         None
