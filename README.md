@@ -4,8 +4,8 @@
 
 ![](https://github.com/qtc-de/vve/workflows/master%20Python%20CI/badge.svg?branch=master)
 ![](https://github.com/qtc-de/vve/workflows/develop%20Python%20CI/badge.svg?branch=develop)
-[![](https://img.shields.io/badge/version-1.1.0-blue)](https://github.com/qtc-de/vve/releases)
-![](https://img.shields.io/badge/python-9%2b-blue)
+[![](https://img.shields.io/badge/version-1.2.0-blue)](https://github.com/qtc-de/vve/releases)
+![](https://img.shields.io/badge/python-11%2b-blue)
 [![](https://img.shields.io/badge/license-GPL%20v3.0-blue)](https://github.com/qtc-de/vve/blob/master/LICENSE)
 
 *Various Vim Encoders* is a small Vim plugin which adds encoding capabilities to the Vim editor.
@@ -167,6 +167,7 @@ The following mappings are currently defined (notice that each key combination n
 | su        |Convert to upper                                             |
 | sl        |Convert to lower                                             |
 | sn        |Echo number of selected lines                                |
+| sr        |Reverse the string                                           |
 | fc        |Convert to camelCase (from snake_case)                       |
 | fs        |Convert to snake_case (from camelCase)                       |
 | fm        |Convert to markdown anchor                                   |
