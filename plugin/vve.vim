@@ -147,6 +147,7 @@ nnoremap <leader>sC :set operatorfunc=vve#strings#VisualLengthHexString<CR>g@
 nnoremap <leader>sn :set operatorfunc=vve#strings#VisualLineLength<CR>g@
 nnoremap <leader>su :set operatorfunc=vve#strings#VisualUpper<CR>g@
 nnoremap <leader>sl :set operatorfunc=vve#strings#VisualLower<CR>g@
+nnoremap <leader>sr :set operatorfunc=vve#strings#VisualReverse<CR>g@
 nnoremap <leader>fc :set operatorfunc=vve#strings#VisualCamelCase<CR>g@
 nnoremap <leader>fs :set operatorfunc=vve#strings#VisualSnakeCase<CR>g@
 nnoremap <leader>fm :set operatorfunc=vve#strings#VisualMarkdownAnchor<CR>g@
@@ -158,6 +159,7 @@ vnoremap <leader>sC :<c-u>call vve#strings#VisualLengthHexString(visualmode())<C
 vnoremap <leader>su :<c-u>call vve#strings#VisualUpper(visualmode())<CR>
 vnoremap <leader>sl :<c-u>call vve#strings#VisualLower(visualmode())<CR>
 vnoremap <leader>sn :<c-u>call vve#strings#VisualLineLength(visualmode())<CR>
+vnoremap <leader>sr :<c-u>call vve#strings#VisualReverse(visualmode())<CR>
 vnoremap <leader>fc :<c-u>call vve#strings#VisualCamelCase(visualmode())<CR>
 vnoremap <leader>fs :<c-u>call vve#strings#VisualSnakeCase(visualmode())<CR>
 vnoremap <leader>fm :<c-u>call vve#strings#VisualMarkdownAnchor(visualmode())<CR>

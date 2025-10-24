@@ -63,3 +63,7 @@ endfunction
 function! vve#strings#VisualCamelCase(type)
     call vve#strings#Dispatch('string_camel_case', a:type)
 endfunction
+
+function! vve#strings#VisualReverse(type)
+    call vve#strings#Dispatch('string_reverse', a:type)
+endfunction
