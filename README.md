@@ -2,8 +2,8 @@
 
 ----
 
-![](https://github.com/qtc-de/vve/workflows/master%20Python%20CI/badge.svg?branch=master)
-![](https://github.com/qtc-de/vve/workflows/develop%20Python%20CI/badge.svg?branch=develop)
+[![](https://github.com/qtc-de/vve/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/qtc-de/vve/actions/workflows/master.yml)
+[![](https://github.com/qtc-de/vve/actions/workflows/develop.yml/badge.svg?branch=develop)](https://github.com/qtc-de/vve/actions/workflows/develop.yml)
 [![](https://img.shields.io/badge/version-1.2.0-blue)](https://github.com/qtc-de/vve/releases)
 ![](https://img.shields.io/badge/python-11%2b-blue)
 [![](https://img.shields.io/badge/license-GPL%20v3.0-blue)](https://github.com/qtc-de/vve/blob/master/LICENSE)

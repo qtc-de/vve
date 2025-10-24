@@ -97,7 +97,7 @@ def test_string_camel_case(string, camel_case):
     assert vve.string_camel_case(string) == camel_case
 
 
-@pytest.mark.parametrize('string, camel_case', [
+@pytest.mark.parametrize('string, reverse', [
                                             ('hello_world', 'dlrow_olleh'),
                                             ('-lagerregal+', '+lagerregal-'),
                                             ])
