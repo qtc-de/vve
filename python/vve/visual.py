@@ -1,6 +1,7 @@
 import re
 import vim
 
+from typing import Callable
 from vve import VveException
 
 

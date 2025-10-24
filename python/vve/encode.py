@@ -5,8 +5,9 @@ import base64
 import binascii
 import urllib.parse
 import xml.sax.saxutils
-
 import vve.visual
+
+from typing import Callable
 from vve import VveException
 
 
